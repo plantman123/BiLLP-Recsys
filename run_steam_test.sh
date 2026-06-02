@@ -1,5 +1,6 @@
 #!/bin/bash
-export CUDA_VISIBLE_DEVICES="2" 
+source export.sh
+export CUDA_VISIBLE_DEVICES="2"
 python generation_rec_agents.py \
  --task steam \
  --backend deepseek-v4-flash \
