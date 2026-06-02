@@ -3,7 +3,7 @@ from typing import List, Union, Literal
 from enum import Enum
 import tiktoken
 from langchain.llms.base import BaseLLM
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chat_models.base import BaseChatModel
 from langchain.schema import (
     SystemMessage,
@@ -11,7 +11,7 @@ from langchain.schema import (
     AIMessage,
 )
 from langchain.agents.react.base import DocstoreExplorer
-from langchain.docstore.base import Docstore
+from langchain_community.docstore.base import Docstore
 from langchain.prompts import PromptTemplate
 from Agents.llm import AnyOpenAILLM
 from Agents.prompts import reflect_prompt, revise_prompt, react_agent_prompt, react_reflect_agent_prompt, REFLECTION_HEADER, LAST_TRIAL_HEADER, REFLECTION_AFTER_LAST_TRIAL_HEADER

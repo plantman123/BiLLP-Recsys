@@ -2,7 +2,6 @@ import os
 import openai
 import random
 import aiolimiter
-from aiohttp import ClientSession
 import asyncio
 import logging
 from typing import Any, List, Dict, Union
@@ -11,6 +10,7 @@ import math
 
 
 async def _throttled_openai_chat_completion_acreate(   
+    client: openai.AsyncOpenAI,
     model: str,    
     messages: List[Dict[str, str]],    
     temperature: float,    
@@ -23,17 +23,23 @@ async def _throttled_openai_chat_completion_acreate(
         trial = 0
         while trial < 5:
             try:              
-                return await openai.ChatCompletion.acreate(                    
+                response = await client.chat.completions.create(                    
                     model=model,                    
                     messages=messages,                    
                     temperature=temperature,                    
                     max_tokens=max_tokens,                    
                     top_p=top_p,                    
                     stop=stop,                
-                )            
-            except openai.error.InvalidRequestError:
+                )
+                content = response.choices[0].message.content or ""
+                return {"choices": [{"message": {"content": content}}]}
+            except openai.BadRequestError:
                 return {"choices": [{"message": {"content": ""}}]}  
-            except openai.error.OpenAIError as e:  
+            except openai.AuthenticationError as e:
+                print(f'c:{e}')
+                trial -= 1
+                await asyncio.sleep(10)
+            except openai.OpenAIError as e:  
                 print(f'b:{e}')            
                 trial -= 1
                 await asyncio.sleep(10)  
@@ -41,10 +47,6 @@ async def _throttled_openai_chat_completion_acreate(
                 print('d')                
                 trial -= 1
                 await asyncio.sleep(10)
-            except openai.error.AuthenticationError as e:
-                print(f'c:{e}')
-                trial -= 1
-                await asyncio.sleep(10)  
             trial += 1
 
         return {"choices": [{"message": {"content": ""}}]}  
@@ -65,13 +67,14 @@ async def generate_from_openai_chat_completion(
         raise ValueError(
             "OPENAI_API_KEY environment variable must be set when using OpenAI API."
         )
-    openai.api_key = os.environ["OPENAI_API_KEY"]
-    openai.api_base = os.environ['OPENAI_API_BASE']
-    session = ClientSession()
-    openai.aiosession.set(session)
+    client = openai.AsyncOpenAI(
+        api_key=os.environ["OPENAI_API_KEY"],
+        base_url=os.environ.get('OPENAI_API_BASE', 'https://api.deepseek.com'),
+    )
     limiter = aiolimiter.AsyncLimiter(requests_per_minute)
     async_responses = [
         _throttled_openai_chat_completion_acreate(
+            client=client,
             model=model,
             messages=messages,
             temperature=temperature,
@@ -83,7 +86,6 @@ async def generate_from_openai_chat_completion(
         for messages in messages_list
     ]
     responses = await tqdm_asyncio.gather(*async_responses)
-    await session.close()
     return responses
 
 

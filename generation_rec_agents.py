@@ -139,11 +139,11 @@ def parse_args():
     args.add_argument('--chatgpt_format', action='store_true')
     args.add_argument('--question_prefix', type=str, default='')
 
-    args.add_argument('--modelpath', type=str, default='/data1/shiwt/LLaMA2/Llama-2-7b-chat-hf/')
+    args.add_argument('--modelpath', type=str, default='./model/shakechen/Llama-2-7b-hf')
     args.add_argument('--peftpath', type=str, default='')
     args.add_argument('--promptpath', type=str, default='')
     args.add_argument('--env_path', type=str, default='./env')
-    args.add_argument('--grounding_model_path', type=str, default='/data1/shiwt/LLaMA2/llama-2-hf-7b/')
+    args.add_argument('--grounding_model_path', type=str, default='./model/shakechen/Llama-2-7b-hf')
     
     args.add_argument('--env', type=str, required=True)
     args.add_argument('--env_window_length', type=int, default=5)
@@ -155,7 +155,7 @@ def parse_args():
     args.add_argument('--traj', action='store_true')
     args.add_argument('--change_examples', action='store_true')
     args.add_argument('--input_file_name', default=None)
-    args.add_argument('--max_token', type=int, default=3000, help="模型token限制")
+    args.add_argument('--max_tokens', type=int, default=3000, help="模型token限制")
 
     args = args.parse_args()
     return args

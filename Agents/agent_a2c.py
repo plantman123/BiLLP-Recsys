@@ -3,7 +3,7 @@ from typing import List, Union, Literal
 from enum import Enum
 import tiktoken
 from langchain.llms.base import BaseLLM
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chat_models.base import BaseChatModel
 from langchain.schema import (
     SystemMessage,
@@ -11,9 +11,9 @@ from langchain.schema import (
     AIMessage,
 )
 from langchain.agents.react.base import DocstoreExplorer
-from langchain.docstore.base import Docstore
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.docstore.base import Docstore
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from Agents.llm import AnyOpenAILLM, OpenAILLM
 from Agents.prompts import reflect_prompt, react_agent_prompt, react_reflect_agent_prompt, react_reflect_retrival_agent_prompt, critic_prompt, REFLECTION_HEADER, LAST_TRIAL_HEADER, REFLECTION_AFTER_LAST_TRIAL_HEADER
@@ -120,7 +120,7 @@ class ReactA2CAgent(ReactReflectAgent):
             self.faiss_actor_memory = None
         else:
             self.actor_memory = actor_memory
-            embeddings = OpenAIEmbeddings()
+            embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
             self.faiss_actor_memory = FAISS.from_texts(self.actor_memory.keys(), embeddings)
 
         if critic_memory == None:
@@ -128,7 +128,7 @@ class ReactA2CAgent(ReactReflectAgent):
             self.faiss_critic_memory = None
         else:
             self.critic_memory = critic_memory
-            embeddings = OpenAIEmbeddings()
+            embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
             self.faiss_critic_memory = FAISS.from_texts(self.critic_memory.keys(), embeddings)
         
         self.infos = {}
@@ -286,7 +286,7 @@ class ReactA2CAgent(ReactReflectAgent):
         
     
     def _update_memory(self, idxs, alpha = 0.5):
-        embeddings = OpenAIEmbeddings()
+        embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
         self.faiss_actor_memory = FAISS.from_texts(self.actor_memory.keys(), embeddings)
         self.faiss_critic_memory = FAISS.from_texts(self.critic_memory.keys(), embeddings)
     
@@ -313,7 +313,7 @@ class ReactA2CAgent(ReactReflectAgent):
             self.critic_memory[query] = reward_lists[id][-1] + gamma * value[i]
     
     def _update_reflections_lib(self):
-        embeddings = OpenAIEmbeddings()
+        embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
         self.faiss_reflections = FAISS.from_texts(self.reflections, embeddings)
     
     def _get_actor_memory(self, history_list, argument_list, k=1):
@@ -377,7 +377,7 @@ def try_with_delay(memory, query, k):
         try:
             result = memory.similarity_search_with_score(query, k=k)
             break
-        except openai.error.AuthenticationError as e:
+        except openai.AuthenticationError as e:
             print(f'c:{e}')
             time.sleep(10)
     return result
