@@ -300,6 +300,8 @@ class ReactA2CAgent(ReactReflectAgent):
             query = format_query(temp_list)
             if query not in self.actor_memory:
                 self.actor_memory[query] = {}
+            if not reward_lists.get(id) or not self.value_lists.get(id):
+                continue
             if reward_lists[id][-1] + gamma*v_i - self.value_lists[id][-1] >= 0:
                 self.actor_memory[query][arguments[i]] = 1
             else:
