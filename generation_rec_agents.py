@@ -155,7 +155,8 @@ def parse_args():
     args.add_argument('--traj', action='store_true')
     args.add_argument('--change_examples', action='store_true')
     args.add_argument('--input_file_name', default=None)
-    
+    args.add_argument('--max_token', type=int, default=3000, help="模型token限制")
+
     args = args.parse_args()
     return args
 
@@ -167,10 +168,13 @@ if __name__ == '__main__':
     
     random.seed(0)
     
+    MAX_TOKENS = args.max_tokens
+    
     modelname = args.backend
     if args.backend == 'llama':
         pathname = args.peftpath.replace('/', '_') if args.add_lora else args.modelpath.replace('/', '_')
         modelname += f"_{pathname}"
+
     time_str = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     outfilename = f"{args.task}_{args.task_split}_{args.task_start_index}_{args.task_end_index}_{modelname}_{args.temperature}_{time_str}"
     print(outfilename)
@@ -185,9 +189,9 @@ if __name__ == '__main__':
         llama = LlamaInterface(args.modelpath, args.peftpath, args.add_lora)
         model = partial(llama.generate_responses_from_llama, temperature=args.temperature, stop=['\n', 'Action', 'Observation', 'Thought'])
     elif args.chatgpt_format:
-        model = partial(chatgpts, model=args.backend, temperature=args.temperature, max_tokens=6000, stop='\n')
+        model = partial(chatgpts, model=args.backend, temperature=args.temperature, max_tokens=MAX_TOKENS, stop='\n')
     else:
-        model = partial(gpts, model=args.backend, temperature=args.temperature, max_tokens=6000, stop='\n')
+        model = partial(gpts, model=args.backend, temperature=args.temperature, max_tokens=MAX_TOKENS, stop='\n')
     
     envs = get_envs(args.env, args, args.task_split)
     grounding_model = get_groundingmodel(args.env, args.grounding_model_path, args, args.task_split) 
