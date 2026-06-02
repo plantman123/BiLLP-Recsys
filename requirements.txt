@@ -15,5 +15,5 @@ openai
 scipy
 wandb
 tiktoken
-langchain
+langchain<0.3
 
