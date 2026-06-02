@@ -236,8 +236,8 @@ class ReactA2CAgent(ReactReflectAgent):
         
         # update actor memory
         value = self.prompt_critic_llm(idxs)
-        self._update_actor_memory(reward_lists, value, arguments, idxs)
-        self._update_critic_memory(reward_lists, value, idxs)
+        self._update_actor_memory(self.reward_lists, value, arguments, idxs)
+        self._update_critic_memory(self.reward_lists, value, idxs)
             
         
         # print(self.scratchpad.split('\n')[-1])
