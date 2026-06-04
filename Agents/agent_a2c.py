@@ -496,12 +496,14 @@ class ReactA2CAgent(ReactReflectAgent):
     def _apply_reflection_memory_policy(self):
         policy = getattr(self.args, 'reflection_memory_policy', 'full')
         memory_size = getattr(self.args, 'reflection_memory_size', 0)
+
         if policy == 'full' or memory_size <= 0 or len(self.reflections) <= memory_size:
             self._sync_reflection_usage()
             return
 
         if policy == 'fifo':
             self.reflections = self.reflections[-memory_size:]
+            
         elif policy == 'lru':
             ranked = sorted(
                 enumerate(self.reflections),

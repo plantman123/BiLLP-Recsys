@@ -1,6 +1,6 @@
 source ./export.sh
 TASK_END=10
-MAX_ITER=5
+MAX_ITER=70
 MAX_TOKENS=6000
 BATCH_SIZE=10
 GROUNDING_MODEL_PATH=./model/shakechen/Llama-2-7b-hf
@@ -27,7 +27,7 @@ COMMON_ARGS=(
   --max_tokens "$MAX_TOKENS"
 )
 
-
+echo "Running Baseline Experiment..."
 CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   "${COMMON_ARGS[@]}" \
   --run_name memory_full \
@@ -35,3 +35,21 @@ CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   --static_reflection_k 2 \
   --reflection_memory_policy full \
   --reflection_memory_size 0
+
+echo "Running FIFO Memory Experiment..."
+CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
+  "${COMMON_ARGS[@]}" \
+  --run_name memory_fifo20 \
+  --reflection_retrieval_mode episode \
+  --static_reflection_k 2 \
+  --reflection_memory_policy fifo \
+  --reflection_memory_size 20
+
+echo "Running LRU Memory Experiment..."
+CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
+  "${COMMON_ARGS[@]}" \
+  --run_name memory_lru20 \
+  --reflection_retrieval_mode episode \
+  --static_reflection_k 2 \
+  --reflection_memory_policy lru \
+  --reflection_memory_size 20

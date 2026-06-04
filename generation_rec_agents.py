@@ -4,7 +4,24 @@ import concurrent.futures
 import random
 import time
 import logging
+import warnings
+import os
+
+
+warnings.filterwarnings("ignore")
+# 屏蔽 Python 标准 logging 模块
 logging.getLogger().setLevel(logging.ERROR)
+
+# 屏蔽各第三方库的专用 logger
+for lib in ("transformers", "huggingface_hub", "openai", "httpx",
+            "langchain", "langchain_core", "langchain_openai",
+            "langchain_community", "faiss", "sentence_transformers",
+            "urllib3", "asyncio", "torch", "accelerate"):
+    logging.getLogger(lib).setLevel(logging.ERROR)
+
+# 屏蔽 tokenizers 的 parallelism 警告
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+
 from functools import partial
 from Agents.agent_reflexion import ReactReflectAgent
 from Agents.agent_retrival import ReactReflectRetrivalAgent
@@ -184,7 +201,7 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    print(args)
+    # print(args)
     task = get_task(args.task, args.task_split)
 
     random.seed(0)
@@ -209,6 +226,7 @@ if __name__ == '__main__':
     else:
         retrieval_k = static_k if args.reflection_retrieval_mode == 'episode' else dynamic_k
         experiment_tag = f"retrieval-{args.reflection_retrieval_mode}-k{retrieval_k}-q{query_window}"
+    
     filename_parts = [
         args.task,
         args.task_split,
