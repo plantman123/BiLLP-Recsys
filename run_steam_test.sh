@@ -13,6 +13,4 @@ python generation_rec_agents.py \
  --Max_Iteration 70 --agent_name agent_a2c --Max_Reflections 2  --batch_size 10 \
  --input_file_name steam_train_0_100_gpt-3.5-turbo-16k_0.5_2024-01-04-18-41-25
 
-
-# model_path=/home/zikun_he/model/shakechen/Llama-2-7b-hf
  

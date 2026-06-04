@@ -118,8 +118,8 @@ class Steam_Grounding_Model(object):
         self.model_path = model_path
         self.batch_size = batch_size
         
-        if 'llama' in self.model_path:
-            base_model = self.model_path
+        if 'llama' in self.model_path or 'llama' in self.model_path.lower():
+            base_model = os.path.abspath(self.model_path)
             self.tokenizer = AutoTokenizer.from_pretrained(base_model)
             self.model = AutoModel.from_pretrained(
                 base_model,

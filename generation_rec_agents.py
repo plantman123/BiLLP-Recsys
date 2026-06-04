@@ -56,28 +56,28 @@ def prune_thought(prompt):
 
 def save_info(infos, outfilename):
     if 'trajs' in infos:
-        traj_file_name = f"trajs_agent/{outfilename}.json"
+        traj_file_name = f"output/trajs_agent/{outfilename}.json"
         with open(traj_file_name, "w") as fout:
             json.dump(infos['trajs'], fout, indent=2)
     
     if 'reflections' in infos:
-        reflection_file_name = f'reflections/{outfilename}.txt'
+        reflection_file_name = f'output/reflections/{outfilename}.txt'
         with open(reflection_file_name, 'w') as file:
             for item in infos['reflections']:
                 file.write(str(item) + '\n')
     
     if 'Q_table' in infos:
-        memory_file_name = f'memory/{outfilename}.json'
+        memory_file_name = f'output/memory/{outfilename}.json'
         with open(memory_file_name, "w") as fout:
             json.dump(infos['Q_table'], fout, indent=2, cls=NpEncoder)
             
     if 'actor_memory' in infos:
-        memory_file_name = f'memory/{outfilename}.json'
+        memory_file_name = f'output/memory/{outfilename}.json'
         with open(memory_file_name, "w") as fout:
             json.dump(infos['actor_memory'], fout, indent=2, cls=NpEncoder)
     
     if 'critic_memory' in infos:
-        critic_memory_file_name = f'critic_memory/{outfilename}.json'
+        critic_memory_file_name = f'output/critic_memory/{outfilename}.json'
         with open(critic_memory_file_name, "w") as fout:
             json.dump(infos['critic_memory'], fout, indent=2, cls=NpEncoder)
 
@@ -155,7 +155,28 @@ def parse_args():
     args.add_argument('--traj', action='store_true')
     args.add_argument('--change_examples', action='store_true')
     args.add_argument('--input_file_name', default=None)
-    args.add_argument('--max_tokens', type=int, default=3000, help="模型token限制")
+    args.add_argument('--max_tokens', type=int, default=6000,
+                      help="Model output token limit. Default 6000 matches the original generation script.")
+    args.add_argument('--rerank_after_grounding', action='store_true',
+                      help="After grounding an actor action to Top-K real items, ask the actor LLM to choose from those candidates.")
+    args.add_argument('--grounding_topk', type=int, default=5,
+                      help="Number of grounded candidates shown to the actor LLM when --rerank_after_grounding is enabled.")
+    args.add_argument('--reflection_retrieval_mode', type=str, default='original',
+                      choices=['original', 'episode', 'dynamic', 'hybrid'],
+                      help="Planner reflection retrieval timing. original preserves the paper code path; the other modes enable the retrieval experiment.")
+    args.add_argument('--static_reflection_k', type=int, default=0,
+                      help="Number of episode-start reflections for hybrid/episode mode. 0 means use --Max_Reflections.")
+    args.add_argument('--dynamic_reflection_k', type=int, default=0,
+                      help="Number of current-state reflections for dynamic/hybrid mode. 0 means use --Max_Reflections.")
+    args.add_argument('--reflection_query_window', type=int, default=15,
+                      help="Number of latest items used to build current-state reflection queries; 15 matches the original task question format.")
+    args.add_argument('--reflection_memory_policy', type=str, default='full',
+                      choices=['full', 'fifo', 'lru'],
+                      help="Planner reflection memory retention policy. full keeps all reflections, fifo keeps newest N, lru evicts least recently retrieved reflections.")
+    args.add_argument('--reflection_memory_size', type=int, default=0,
+                      help="Maximum number of planner reflections to keep for fifo/lru. 0 disables pruning.")
+    args.add_argument('--run_name', type=str, default='',
+                      help="Optional label included in the output filename.")
 
     args = args.parse_args()
     return args
@@ -165,20 +186,43 @@ if __name__ == '__main__':
     args = parse_args()
     print(args)
     task = get_task(args.task, args.task_split)
-    
+
     random.seed(0)
-    
+
     MAX_TOKENS = args.max_tokens
-    
+
     modelname = args.backend
     if args.backend == 'llama':
         pathname = args.peftpath.replace('/', '_') if args.add_lora else args.modelpath.replace('/', '_')
         modelname += f"_{pathname}"
 
     time_str = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-    outfilename = f"{args.task}_{args.task_split}_{args.task_start_index}_{args.task_end_index}_{modelname}_{args.temperature}_{time_str}"
+    static_k = args.static_reflection_k if args.static_reflection_k > 0 else args.Max_Reflections
+    dynamic_k = args.dynamic_reflection_k if args.dynamic_reflection_k > 0 else args.Max_Reflections
+    query_window = max(1, args.reflection_query_window)
+    if args.run_name:
+        experiment_tag = re.sub(r'[^A-Za-z0-9_.-]+', '-', args.run_name.strip())
+    elif args.reflection_retrieval_mode == 'hybrid':
+        experiment_tag = f"retrieval-hybrid-s{static_k}-d{dynamic_k}-q{query_window}"
+    elif args.reflection_retrieval_mode == 'original':
+        experiment_tag = ''
+    else:
+        retrieval_k = static_k if args.reflection_retrieval_mode == 'episode' else dynamic_k
+        experiment_tag = f"retrieval-{args.reflection_retrieval_mode}-k{retrieval_k}-q{query_window}"
+    filename_parts = [
+        args.task,
+        args.task_split,
+        str(args.task_start_index),
+        str(args.task_end_index),
+        modelname,
+        str(args.temperature),
+    ]
+    if experiment_tag:
+        filename_parts.append(experiment_tag)
+    filename_parts.append(time_str)
+    outfilename = '_'.join(filename_parts)
     print(outfilename)
-    
+
     idxs_all = list(range(len(task)))
     if args.random:
         random.Random(233).shuffle(idxs_all)
@@ -206,10 +250,7 @@ if __name__ == '__main__':
         agent = ReactA2CAgent(task, idxs, args, envs, grounding_model, max_steps=args.Max_Iteration, react_llm=model, reflect_llm=model, critic_llm=model, reflections_memory=reflections, actor_memory=Q_Memory, critic_memory=Critic_Memory)
     elif args.agent_name == "agent_revise":
         agent = ReactReflectReviseAgent(task, idxs, args, envs, grounding_model, max_steps=args.Max_Iteration, react_llm=model, reflect_llm=model)
-        
-    
+
     infos = agent.run(outfilename=outfilename)
-    
+
     save_info(infos, outfilename)
-    
-    

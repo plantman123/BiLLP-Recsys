@@ -3,7 +3,7 @@ from typing import List, Union, Literal
 from enum import Enum
 import tiktoken
 from langchain.llms.base import BaseLLM
-from langchain_openai import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.chat_models.base import BaseChatModel
 from langchain.schema import (
     SystemMessage,
@@ -11,9 +11,9 @@ from langchain.schema import (
     AIMessage,
 )
 from langchain.agents.react.base import DocstoreExplorer
-from langchain_community.docstore.base import Docstore
+from langchain.docstore.base import Docstore
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
+from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from Agents.llm import AnyOpenAILLM, OpenAILLM
 from Agents.prompts import reflect_prompt, react_agent_prompt, react_reflect_agent_prompt, react_reflect_retrival_agent_prompt, critic_prompt, REFLECTION_HEADER, LAST_TRIAL_HEADER, REFLECTION_AFTER_LAST_TRIAL_HEADER
@@ -40,28 +40,28 @@ class NpEncoder(json.JSONEncoder):
 
 def save_info(infos, outfilename):
     if 'trajs' in infos:
-        traj_file_name = f"trajs_agent/{outfilename}.json"
+        traj_file_name = f"output/trajs_agent/{outfilename}.json"
         with open(traj_file_name, "w") as fout:
             json.dump(infos['trajs'], fout, indent=2)
     
     if 'reflections' in infos:
-        reflection_file_name = f'reflections/{outfilename}.txt'
+        reflection_file_name = f'output/reflections/{outfilename}.txt'
         with open(reflection_file_name, 'w') as file:
             for item in infos['reflections']:
                 file.write(str(item) + '\n')
     
     if 'Q_table' in infos:
-        memory_file_name = f'memory/{outfilename}.json'
+        memory_file_name = f'output/memory/{outfilename}.json'
         with open(memory_file_name, "w") as fout:
             json.dump(infos['Q_table'], fout, indent=2, cls=NpEncoder)
             
     if 'actor_memory' in infos:
-        memory_file_name = f'memory/{outfilename}.json'
+        memory_file_name = f'output/memory/{outfilename}.json'
         with open(memory_file_name, "w") as fout:
             json.dump(infos['actor_memory'], fout, indent=2, cls=NpEncoder)
     
     if 'critic_memory' in infos:
-        critic_memory_file_name = f'critic_memory/{outfilename}.json'
+        critic_memory_file_name = f'output/critic_memory/{outfilename}.json'
         with open(critic_memory_file_name, "w") as fout:
             json.dump(infos['critic_memory'], fout, indent=2, cls=NpEncoder)
 
@@ -106,6 +106,10 @@ class ReactA2CAgent(ReactReflectAgent):
         self.reflect_examples = REFLECTIONS
         self.critic_llm = critic_llm
         self.reflections_str: dict = {}
+        self.episode_reflections_str: dict = {}
+        self.reflection_retrieval_records = defaultdict(list)
+        self.grounding_rerank_records = defaultdict(list)
+        self._last_formatted_reflections = {}
         
         
         if reflections_memory == None:
@@ -113,6 +117,12 @@ class ReactA2CAgent(ReactReflectAgent):
             self.faiss_reflections = None
         else:
             self.reflections = reflections_memory
+            self.faiss_reflections = None
+        self._reflection_clock = 0
+        self._reflection_usage = {}
+        self._initialize_reflection_usage()
+        self._apply_reflection_memory_policy()
+        if self.reflections:
             self._update_reflections_lib()
         
         if actor_memory == None:
@@ -136,6 +146,31 @@ class ReactA2CAgent(ReactReflectAgent):
         
         self.batch_size = args.batch_size
         self.enc = tiktoken.encoding_for_model("text-davinci-003")
+
+    def get_reflect_str(self,
+                strategy: ReflexionStrategy, idxs) -> None:
+        mode = getattr(self.args, 'reflection_retrieval_mode', 'original')
+        for id in idxs:
+            self.reflection_retrieval_records[id] = []
+
+        if mode == 'dynamic':
+            for id in idxs:
+                self.reflections_str[id] = ''
+                self.episode_reflections_str[id] = ''
+            return
+
+        static_k = self._static_reflection_k()
+        print('Reflecting...')
+        if strategy == ReflexionStrategy.REFLEXION:
+            for id in idxs:
+                self.reflections_str[id] = self.format_reflections(self.reflections, id, MAX=static_k)
+                self.episode_reflections_str[id] = self.reflections_str[id]
+                if mode != 'original':
+                    self._mark_reflections_used(self._last_formatted_reflections.get(id, []))
+                    self._record_episode_retrieval(id, static_k)
+                print(self.reflections_str[id])
+        else:
+            raise NotImplementedError(f'Unknown reflection strategy: {strategy}')
     
     def run(self, reset = True, reflect_strategy: ReflexionStrategy = ReflexionStrategy.REFLEXION, outfilename='') -> None:
         
@@ -148,6 +183,7 @@ class ReactA2CAgent(ReactReflectAgent):
             self.single_run(temp_idxs, reset)
 
             self.reflect(reflect_strategy, temp_idxs)
+            self._apply_reflection_memory_policy()
             self._update_reflections_lib()
             self._update_memory(temp_idxs)
         
@@ -160,19 +196,34 @@ class ReactA2CAgent(ReactReflectAgent):
             save_info(self.final_infos, outfilename)
             
         return self.final_infos
+
+    def reflect(self,
+                strategy: ReflexionStrategy, idxs) -> None:
+        print('Reflecting...')
+
+        if strategy == ReflexionStrategy.REFLEXION:
+            new_reflections = self.prompt_reflection(idxs)
+            if getattr(self.args, 'reflection_memory_policy', 'full') == 'full':
+                self.reflections += new_reflections
+            else:
+                self._add_reflections(new_reflections)
+        else:
+            raise NotImplementedError(f'Unknown reflection strategy: {strategy}')
     
     def step(self, idxs) -> None:
+        self._refresh_step_reflections(idxs)
+
         # Think
         for id in idxs:
             self.scratchpad[id] += f'\nThought {self.step_n}:'
         prompts = self.prompt_agent(idxs)
         for i, id in enumerate(idxs):
             self.scratchpad[id] += ' ' + prompts[i]
-            
+
+        random_type = []
+        q_prompt = {}
         if self.tool_use ==True:
         # print(self.scratchpad.split('\n')[-1])
-            random_type = []
-            q_prompt = {}
             for i, id in enumerate(idxs):
                 hist = self.env.get_hist_list(self.argument_lists[id])
                 random_type.append(random.sample([x for x in self.GENRE if x not in hist], 2))
@@ -197,9 +248,10 @@ class ReactA2CAgent(ReactReflectAgent):
                 continue
             
         for i, id in enumerate(idxs):
-            self.scratchpad[id] = self.scratchpad[id].replace(f'(Please recommend {random_type[i][0]} and {random_type[i][1]} items to help users explore their interests)', '')
+            if self.tool_use and i < len(random_type):
+                self.scratchpad[id] = self.scratchpad[id].replace(f'(Please recommend {random_type[i][0]} and {random_type[i][1]} items to help users explore their interests)', '')
             if self.faiss_actor_memory!=None:
-                self.scratchpad[id] = self.scratchpad[id].replace(q_prompt[id], '')
+                self.scratchpad[id] = self.scratchpad[id].replace(q_prompt.get(id, ''), '')
         
              
         
@@ -209,8 +261,10 @@ class ReactA2CAgent(ReactReflectAgent):
             
             if action_types[i] == 'recommend':
                 old_film = arguments[i]
-                argument_candidate = self.grounding_model.get_topk_near_item([old_film], self.args.Max_Iteration)[0]
-                arguments[i] = argument_candidate[0]
+                rerank_after_grounding = getattr(self.args, 'rerank_after_grounding', False)
+                grounding_topk = getattr(self.args, 'grounding_topk', 5) if rerank_after_grounding else self.args.Max_Iteration
+                argument_candidate = self.grounding_model.get_topk_near_item([old_film], grounding_topk)[0]
+                arguments[i] = self._select_grounded_item(id, old_film, argument_candidate, q_prompt.get(id, ''))
                 self.argument_lists[id].append(arguments[i])
                 if old_film != arguments[i]:
                     self.scratchpad[id] += f'\nObservation {self.step_n}: [{old_film}] can not be recommened, instead, recommend[{arguments[i]}]'
@@ -269,6 +323,279 @@ class ReactA2CAgent(ReactReflectAgent):
                             history_list = history_list[i],
                             instruction = instruction_list[i]) for i, id in enumerate(idxs)]
         return prompts
+
+    def _refresh_step_reflections(self, idxs):
+        mode = getattr(self.args, 'reflection_retrieval_mode', 'original')
+        if mode in ('original', 'episode'):
+            return
+
+        dynamic_k = self._dynamic_reflection_k()
+        for id in idxs:
+            current_query = self._current_reflection_query(id)
+            static_selected = (
+                self._latest_retrieval_selection(id, 'episode')
+                if mode == 'hybrid'
+                else []
+            )
+            current_reflections = self._format_reflections_by_query(
+                current_query,
+                dynamic_k,
+                record_id=id,
+                scope='dynamic',
+                exclude_reflections=static_selected,
+            )
+
+            if mode == 'dynamic':
+                self.reflections_str[id] = current_reflections
+            elif mode == 'hybrid':
+                dynamic_selected = self._latest_retrieval_selection(id, 'dynamic')
+                self.reflections_str[id] = self._format_selected_reflections(
+                    static_selected + dynamic_selected
+                )
+            else:
+                raise NotImplementedError(f'Unknown reflection retrieval mode: {mode}')
+
+    def _initial_reflection_query(self, id):
+        return self.task[id]
+
+    def _current_reflection_query(self, id):
+        if not self.argument_lists[id]:
+            return self._initial_reflection_query(id)
+        current_items = self.task.get_history_actions(id) + self.argument_lists[id]
+        return format_reflection_query(current_items, Max=self._reflection_query_window())
+
+    def _reflection_query_window(self):
+        return max(1, getattr(self.args, 'reflection_query_window', 15))
+
+    def _static_reflection_k(self):
+        k = getattr(self.args, 'static_reflection_k', 0)
+        return k if k > 0 else self.args.Max_Reflections
+
+    def _dynamic_reflection_k(self):
+        k = getattr(self.args, 'dynamic_reflection_k', 0)
+        return k if k > 0 else self.args.Max_Reflections
+
+    def _record_episode_retrieval(self, id, requested_k):
+        self.reflection_retrieval_records[id].append({
+            'scope': 'episode',
+            'step': 0,
+            'query': self._initial_reflection_query(id),
+            'requested_k': requested_k,
+            'memory_pool_size': len(self.reflections),
+            'excluded_reflections': [],
+            'selected_reflections': list(self._last_formatted_reflections.get(id, [])),
+        })
+
+    def _format_reflections_by_query(
+        self,
+        query,
+        MAX,
+        header=REFLECTION_HEADER,
+        label='Reflections',
+        record_id=None,
+        scope=None,
+        exclude_reflections=None,
+    ):
+        excluded_reflections = list(exclude_reflections or [])
+        excluded = set(excluded_reflections)
+        candidate_k = min(len(self.reflections), MAX + len(excluded))
+        candidates = []
+        if self.reflections and MAX > 0 and len(self.reflections) <= candidate_k:
+            candidates = [r.strip() for r in self.reflections]
+        elif self.reflections and MAX > 0 and self.faiss_reflections is None:
+            candidates = [r.strip() for r in self.reflections[-candidate_k:]]
+        elif self.reflections and MAX > 0:
+            docs = try_with_delay(self.faiss_reflections, query, candidate_k)
+            candidates = [r.page_content.strip() for r, score in docs]
+
+        selected_reflections = []
+        for reflection in candidates:
+            if reflection in excluded or reflection in selected_reflections:
+                continue
+            selected_reflections.append(reflection)
+            if len(selected_reflections) == MAX:
+                break
+
+        self._mark_reflections_used(selected_reflections)
+        if record_id is not None:
+            self.reflection_retrieval_records[record_id].append({
+                'scope': scope,
+                'step': 0 if scope == 'episode' else getattr(self, 'step_n', 0),
+                'query': query,
+                'requested_k': MAX,
+                'memory_pool_size': len(self.reflections),
+                'excluded_reflections': excluded_reflections,
+                'selected_reflections': selected_reflections,
+            })
+
+        return self._format_selected_reflections(selected_reflections, header, label)
+
+    def _latest_retrieval_selection(self, id, scope):
+        for record in reversed(self.reflection_retrieval_records.get(id, [])):
+            if record['scope'] == scope:
+                return record['selected_reflections']
+        return []
+
+    def _format_selected_reflections(
+        self,
+        selected_reflections,
+        header=REFLECTION_HEADER,
+        label='Reflections',
+    ):
+        if not selected_reflections:
+            return ''
+        return header + f'{label}:\n- ' + '\n- '.join(selected_reflections)
+
+    def _experiment_config(self):
+        return {
+            'run_name': getattr(self.args, 'run_name', ''),
+            'reflection_retrieval_mode': getattr(self.args, 'reflection_retrieval_mode', 'original'),
+            'reflection_query_style': 'original_task_question',
+            'reflection_query_window': self._reflection_query_window(),
+            'static_reflection_k': self._static_reflection_k(),
+            'dynamic_reflection_k': self._dynamic_reflection_k(),
+            'Max_Reflections': self.args.Max_Reflections,
+            'Max_Iteration': self.args.Max_Iteration,
+            'reflection_memory_policy': getattr(self.args, 'reflection_memory_policy', 'full'),
+            'reflection_memory_size': getattr(self.args, 'reflection_memory_size', 0),
+            'rerank_after_grounding': getattr(self.args, 'rerank_after_grounding', False),
+            'grounding_topk': getattr(self.args, 'grounding_topk', 5),
+        }
+
+    def _experiment_enabled(self):
+        return (
+            bool(getattr(self.args, 'run_name', ''))
+            or getattr(self.args, 'reflection_retrieval_mode', 'original') != 'original'
+            or getattr(self.args, 'reflection_memory_policy', 'full') != 'full'
+            or getattr(self.args, 'reflection_memory_size', 0) > 0
+            or getattr(self.args, 'rerank_after_grounding', False)
+        )
+
+    def _initialize_reflection_usage(self):
+        self._reflection_usage = {}
+        self._reflection_clock = 0
+        for reflection in self.reflections:
+            self._reflection_clock += 1
+            self._reflection_usage[reflection] = self._reflection_clock
+
+    def _add_reflections(self, new_reflections):
+        for reflection in new_reflections:
+            if reflection is None:
+                continue
+            reflection = str(reflection).strip()
+            if not reflection:
+                continue
+            self.reflections.append(reflection)
+            self._mark_reflections_used([reflection])
+
+    def _mark_reflections_used(self, reflections):
+        for reflection in reflections:
+            self._reflection_clock += 1
+            self._reflection_usage[reflection] = self._reflection_clock
+
+    def _apply_reflection_memory_policy(self):
+        policy = getattr(self.args, 'reflection_memory_policy', 'full')
+        memory_size = getattr(self.args, 'reflection_memory_size', 0)
+        if policy == 'full' or memory_size <= 0 or len(self.reflections) <= memory_size:
+            self._sync_reflection_usage()
+            return
+
+        if policy == 'fifo':
+            self.reflections = self.reflections[-memory_size:]
+        elif policy == 'lru':
+            ranked = sorted(
+                enumerate(self.reflections),
+                key=lambda item: (self._reflection_usage.get(item[1], -1), item[0]),
+                reverse=True,
+            )
+            keep_indices = set(index for index, reflection in ranked[:memory_size])
+            self.reflections = [reflection for index, reflection in enumerate(self.reflections) if index in keep_indices]
+        else:
+            raise NotImplementedError(f'Unknown reflection memory policy: {policy}')
+
+        self._sync_reflection_usage()
+
+    def _sync_reflection_usage(self):
+        current_reflections = set(self.reflections)
+        self._reflection_usage = {
+            reflection: used_at
+            for reflection, used_at in self._reflection_usage.items()
+            if reflection in current_reflections
+        }
+        for reflection in self.reflections:
+            if reflection not in self._reflection_usage:
+                self._reflection_clock += 1
+                self._reflection_usage[reflection] = self._reflection_clock
+
+    def _select_grounded_item(self, id, proposed_item, candidates, actor_memory_prompt=''):
+        if not candidates:
+            return proposed_item
+        if not getattr(self.args, 'rerank_after_grounding', False) or len(candidates) == 1:
+            return candidates[0]
+
+        prompt = self._build_grounding_rerank_prompt(id, proposed_item, candidates, actor_memory_prompt)
+        for _ in range(3):
+            try:
+                response = format_step(self.llm([prompt]))[0]
+                action_type, argument = parse_action([response])
+                if action_type[0] == 'recommend':
+                    selected = self._match_grounded_candidate(argument[0], candidates)
+                    if selected is not None:
+                        self._record_grounding_rerank(id, proposed_item, candidates, selected, False)
+                        return selected
+            except Exception as e:
+                print(f'grounding rerank failed: {e}')
+
+        self._record_grounding_rerank(id, proposed_item, candidates, candidates[0], True)
+        return candidates[0]
+
+    def _record_grounding_rerank(self, id, proposed_item, candidates, selected_item, fallback):
+        self.grounding_rerank_records[id].append({
+            'step': self.step_n,
+            'proposed_item': proposed_item,
+            'candidates': list(candidates),
+            'selected_item': selected_item,
+            'fallback_to_first': fallback,
+        })
+
+    def _build_grounding_rerank_prompt(self, id, proposed_item, candidates, actor_memory_prompt=''):
+        candidate_lines = '\n'.join([f'{i + 1}. {candidate}' for i, candidate in enumerate(candidates)])
+        history = self.task.get_history_actions(id)
+        current_traj = truncate_scratchpad(self.scratchpad[id], n_tokens=2500, tokenizer=self.enc)
+        reflections = self.reflections_str.get(id, '')
+        memory = actor_memory_prompt if actor_memory_prompt else 'None'
+
+        return f"""You are choosing the final recommendation after grounding an actor action to real catalog items.
+The original actor proposed: [{proposed_item}]
+
+User viewing history:
+{history}
+
+Current reasoning trajectory:
+{current_traj}
+
+Relevant reflections:
+{reflections if reflections else 'None'}
+
+Relevant actor memory:
+{memory}
+
+Grounded candidate items:
+{candidate_lines}
+
+Choose exactly one item from Grounded candidate items. Your response must be exactly one line in this format:
+recommend[exact candidate item]
+"""
+
+    def _match_grounded_candidate(self, selected, candidates):
+        if selected in candidates:
+            return selected
+
+        normalized_selected = normalize_answer(selected)
+        for candidate in candidates:
+            if normalize_answer(candidate) == normalized_selected:
+                return candidate
+        return None
     
     def _build_info(self, idxs) -> str:
         for id in idxs:
@@ -283,12 +610,20 @@ class ReactA2CAgent(ReactReflectAgent):
             traj = self.task[id] + self.scratchpad[id]
             # reflection = format_reflections(self.reflections[id], MAX=1000)
             self.infos[id].update({'userid': userid, 'prompt': prompt, 'traj': traj, 'traj_by_line': traj.split('\n')})
+            if self._experiment_enabled():
+                self.infos[id].update({
+                    'experiment_config': self._experiment_config(),
+                    'reflection_retrievals': list(self.reflection_retrieval_records.get(id, [])),
+                    'grounding_reranks': list(self.grounding_rerank_records.get(id, [])),
+                })
         
     
     def _update_memory(self, idxs, alpha = 0.5):
         embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
-        self.faiss_actor_memory = FAISS.from_texts(self.actor_memory.keys(), embeddings)
-        self.faiss_critic_memory = FAISS.from_texts(self.critic_memory.keys(), embeddings)
+        if self.actor_memory:
+            self.faiss_actor_memory = FAISS.from_texts(list(self.actor_memory.keys()), embeddings)
+        if self.critic_memory:
+            self.faiss_critic_memory = FAISS.from_texts(list(self.critic_memory.keys()), embeddings)
     
     def _update_actor_memory(self, reward_lists, value, arguments, idxs, gamma=0.5):
         for i, id in enumerate(idxs):
@@ -310,11 +645,20 @@ class ReactA2CAgent(ReactReflectAgent):
     
     def _update_critic_memory(self, reward_lists, value, idxs, gamma=0.5):
         for i, id in enumerate(idxs):
+            try:
+                v_i = float(value[i])
+            except (IndexError, ValueError):
+                v_i = 0
+            if not reward_lists.get(id):
+                continue
             temp_list = self.task.get_history_actions(id)+self.argument_lists[id][:-1]
             query = format_query(temp_list)
-            self.critic_memory[query] = reward_lists[id][-1] + gamma * value[i]
+            self.critic_memory[query] = reward_lists[id][-1] + gamma * v_i
     
     def _update_reflections_lib(self):
+        if not self.reflections:
+            self.faiss_reflections = None
+            return
         embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
         self.faiss_reflections = FAISS.from_texts(self.reflections, embeddings)
     
@@ -351,17 +695,17 @@ class ReactA2CAgent(ReactReflectAgent):
         
     def format_reflections(self, reflections: List[str], id,
                         header: str = REFLECTION_HEADER, MAX=2) -> str:
-        if reflections == []:
-            return ''
-        elif MAX ==0:
+        if reflections == [] or MAX == 0:
+            self._last_formatted_reflections[id] = []
             return ''
         elif len(reflections) <= MAX:
-            return header + 'Reflections:\n- ' + '\n- '.join([r.strip() for r in reflections])
+            selected_reflections = [r.strip() for r in reflections]
         else:
-            # most similar strategy
-            # docs = self.faiss_reflections.similarity_search(self.task[id], k=MAX)
             docs = try_with_delay(self.faiss_reflections, self.task[id], MAX)
-            return header + 'Reflections:\n- ' + '\n- '.join([r.page_content.strip() for r,score in docs])
+            selected_reflections = [r.page_content.strip() for r, score in docs]
+
+        self._last_formatted_reflections[id] = selected_reflections
+        return header + 'Reflections:\n- ' + '\n- '.join(selected_reflections)
     
     def prompt_critic_llm(self, idxs):
         return format_step(self.critic_llm(self._build_critic_prompt(idxs)))
@@ -379,7 +723,7 @@ def try_with_delay(memory, query, k):
         try:
             result = memory.similarity_search_with_score(query, k=k)
             break
-        except openai.AuthenticationError as e:
+        except openai.error.AuthenticationError as e:
             print(f'c:{e}')
             time.sleep(10)
     return result
@@ -393,6 +737,12 @@ def format_query(argument_list, Max=10):
     result = ','.join(map(str, last_elements)) 
     query = 'The user viewing history is [' + result + ']'
     return query
+
+def format_reflection_query(argument_list, Max=15):
+    return (
+        f"The user's viewing history is {argument_list[-Max:]}, "
+        "please recommend item for this user"
+    )
 
 def calculate_q_value(reward_list, gamma=0.5):
     q_value_list = [0] * len(reward_list)

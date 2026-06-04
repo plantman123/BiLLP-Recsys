@@ -12,7 +12,7 @@ from langchain.schema import (
 )
 from langchain.agents.react.base import DocstoreExplorer
 from langchain_community.docstore.base import Docstore
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from Agents.llm import AnyOpenAILLM, OpenAILLM
@@ -72,7 +72,7 @@ class ReactReflectRetrivalAgent(ReactReflectAgent):
             self.faiss_Q_table = None
         else:
             self.Q_table = Q_memory
-            embeddings = OpenAIEmbeddings()
+            embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
             self.faiss_Q_table = FAISS.from_texts(self.Q_table.keys(), embeddings)
 
         self.infos = {}
@@ -147,12 +147,12 @@ class ReactReflectRetrivalAgent(ReactReflectAgent):
                     self.Q_table[query] = {action: q_value}
         
         
-        embeddings = OpenAIEmbeddings()
+        embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
         self.faiss_Q_table = FAISS.from_texts(self.Q_table.keys(), embeddings)
         
     
     def _update_reflections_lib(self):
-        embeddings = OpenAIEmbeddings()
+        embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
         self.faiss_reflections = FAISS.from_texts(self.reflections, embeddings)
     
     def _get_Q_record(self, history_list, argument_list, k=5):
