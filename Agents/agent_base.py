@@ -111,9 +111,6 @@ class ReactAgent:
         (respond ONLY with recommend[item_name], no other text)
         for example, when you want to recommend the game Undertale, you should respond just:
         recommend[Undertale];
-        when you want to recommend the game Borderlands 2, you should respond just:
-        recommend[Borderlands 2];
-        other respond is invalid and you do not need to show your thought.
         """
         for id in idxs:
             self.scratchpad[id] += f'\nAction {self.step_n}:{ACTION_HINT}'

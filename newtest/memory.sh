@@ -5,15 +5,13 @@ LOGDIR=./newtest
 mkdir -p "$LOGDIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 RUN_LOG="$LOGDIR/memory_${TIMESTAMP}.log"
-
-# 将所有 echo 输出同时写入终端和日志
 exec > >(tee -a "$RUN_LOG") 2>&1
 
 echo "=== Memory Experiment Started at $(date) ==="
 echo "Log file: $RUN_LOG"
 
-TASK_END=5
-MAX_ITER=5
+TASK_END=50
+MAX_ITER=30
 MAX_TOKENS=6000
 BATCH_SIZE=10
 GROUNDING_MODEL_PATH=./model/shakechen/Llama-2-7b-hf
@@ -29,7 +27,7 @@ COMMON_ARGS=(
   --task_end_index "$TASK_END"
   --temperature 0.5
   --env steam
-  --env_threshold 50
+  --env_threshold 30
   --env_window_length 4
   --Max_Iteration "$MAX_ITER"
   --agent_name agent_a2c
@@ -49,20 +47,20 @@ CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   --reflection_memory_policy full \
   --reflection_memory_size 0
 
-# echo "Running FIFO Memory Experiment..."
-# CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
-#   "${COMMON_ARGS[@]}" \
-#   --run_name memory_fifo20 \
-#   --reflection_retrieval_mode episode \
-#   --static_reflection_k 2 \
-#   --reflection_memory_policy fifo \
-#   --reflection_memory_size 20
+echo "Running FIFO Memory Experiment..."
+CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
+  "${COMMON_ARGS[@]}" \
+  --run_name memory_fifo20 \
+  --reflection_retrieval_mode episode \
+  --static_reflection_k 2 \
+  --reflection_memory_policy fifo \
+  --reflection_memory_size 8
 
-# echo "Running LRU Memory Experiment..."
-# CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
-#   "${COMMON_ARGS[@]}" \
-#   --run_name memory_lru20 \
-#   --reflection_retrieval_mode episode \
-#   --static_reflection_k 2 \
-#   --reflection_memory_policy lru \
-#   --reflection_memory_size 20
+echo "Running LRU Memory Experiment..."
+CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
+  "${COMMON_ARGS[@]}" \
+  --run_name memory_lru20 \
+  --reflection_retrieval_mode episode \
+  --static_reflection_k 2 \
+  --reflection_memory_policy lru \
+  --reflection_memory_size 8
