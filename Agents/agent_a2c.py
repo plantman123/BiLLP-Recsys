@@ -235,8 +235,18 @@ class ReactA2CAgent(ReactReflectAgent):
                     print(q_prompt[id])
                 
         # Act
+        ACTION_HINT = """
+        (respond ONLY with recommend[item_name], no other text)
+        for example, when you want to recommend the game Undertale, you should respond just:
+        recommend[Undertale];
+        when you want to recommend the game Borderlands 2, you should respond just:
+        recommend[Borderlands 2];
+        other respond is invalid and you mustn't show your thought.
+        Especially you do not need to respond: 'thought: user's ......'
+        """
+
         for id in idxs:
-            self.scratchpad[id] += f'\nAction {self.step_n}:'
+            self.scratchpad[id] += f'\nAction {self.step_n}:{ACTION_HINT}'
         for _ in range(5):
             try:
                 action = self.prompt_agent(idxs)
@@ -246,6 +256,8 @@ class ReactA2CAgent(ReactReflectAgent):
             except:
                 print('b')
                 continue
+        for id in idxs:
+            self.scratchpad[id] = self.scratchpad[id].replace(ACTION_HINT, '')
             
         for i, id in enumerate(idxs):
             if self.tool_use and i < len(random_type):
@@ -643,7 +655,7 @@ recommend[exact candidate item]
                 self.actor_memory[query][arguments[i]] = 1
             else:
                 self.actor_memory[query][arguments[i]] = -1
-            self.value_lists[id].append(float(value[i]))
+            self.value_lists[id].append(v_i)
     
     def _update_critic_memory(self, reward_lists, value, idxs, gamma=0.5):
         for i, id in enumerate(idxs):

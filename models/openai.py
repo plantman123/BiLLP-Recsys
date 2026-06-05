@@ -85,7 +85,10 @@ async def generate_from_openai_chat_completion(
         )
         for messages in messages_list
     ]
-    responses = await tqdm_asyncio.gather(*async_responses)
+    try:
+        responses = await tqdm_asyncio.gather(*async_responses)
+    finally:
+        await client.close()
     return responses
 
 

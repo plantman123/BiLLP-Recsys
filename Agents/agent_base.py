@@ -107,8 +107,16 @@ class ReactAgent:
                     print(q_prompt[id])
                 
         # Act
+        ACTION_HINT = """
+        (respond ONLY with recommend[item_name], no other text)
+        for example, when you want to recommend the game Undertale, you should respond just:
+        recommend[Undertale];
+        when you want to recommend the game Borderlands 2, you should respond just:
+        recommend[Borderlands 2];
+        other respond is invalid and you do not need to show your thought.
+        """
         for id in idxs:
-            self.scratchpad[id] += f'\nAction {self.step_n}:'
+            self.scratchpad[id] += f'\nAction {self.step_n}:{ACTION_HINT}'
         for _ in range(5):
             try:
                 action = self.prompt_agent(idxs)
@@ -118,6 +126,8 @@ class ReactAgent:
             except:
                 print('b')
                 continue
+        for id in idxs:
+            self.scratchpad[id] = self.scratchpad[id].replace(ACTION_HINT, '')
         for i, id in enumerate(idxs):
             self.scratchpad[id] = self.scratchpad[id].replace(f'(Please recommend {random_type[i][0]} and {random_type[i][1]} items to help users explore their interests)', '')
             if self.args.agent_name == 'agent_retrival' and self.faiss_Q_table!=None:
@@ -203,17 +213,17 @@ def format_step(steps: list) -> list:
 gpt2_enc = tiktoken.encoding_for_model("text-davinci-003")
 
 def parse_action(list_str: list[str]):
-    pattern = r'^(\w+)\[(.+)\]$'
+    pattern = r'(\w+)\[(.+)\]'
     
     action_types = []
     arguments = []
     
     for string in list_str:
-        match = re.match(pattern, string)
+        cleaned = re.sub(r'^(Action\s*\d*\s*:\s*)', '', string.strip())
+        match = re.search(pattern, cleaned)
         if match:
             action_types.append(match.group(1))
             arguments.append(match.group(2))
-             
         else:
             action_types.append(None)
             arguments.append(None)
