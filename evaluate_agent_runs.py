@@ -11,9 +11,16 @@ REWARD_RE = re.compile(r"reward\s*=\s*(-?\d+(?:\.\d+)?)")
 ACTION_RE = re.compile(r"^Action\s+\d+:\s*recommend\[", re.IGNORECASE)
 
 
+def _is_observation_line(line):
+    """Filter out Thought lines that contain hallucinated Observation text."""
+    return not line.startswith("Thought")
+
+
 def parse_rewards(lines):
     rewards = []
     for line in lines:
+        if not _is_observation_line(line):
+            continue
         match = REWARD_RE.search(line)
         if match:
             rewards.append(float(match.group(1)))
@@ -27,16 +34,19 @@ def summarize_episode(entry, max_iteration):
     for line in lines:
         if "Episode continue" not in line:
             continue
+        if not _is_observation_line(line):
+            continue
         match = REWARD_RE.search(line)
         if match:
             accepted_rewards.append(float(match.group(1)))
 
-    action_count = sum(1 for line in lines if ACTION_RE.search(line))
-    user_stop = any("User Stop" in line for line in lines)
-    invalid = any("Invalid Action" in line for line in lines)
+    obs_lines = [line for line in lines if _is_observation_line(line)]
+    action_count = sum(1 for line in obs_lines if ACTION_RE.search(line))
+    user_stop = any("User Stop" in line for line in obs_lines)
+    invalid = any("Invalid Action" in line for line in obs_lines)
     grounding_replacements = sum(
         1
-        for line in lines
+        for line in obs_lines
         if "can not be recommened, instead, recommend" in line
         or "can not be recommended, instead, recommend" in line
     )

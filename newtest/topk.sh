@@ -4,15 +4,15 @@ source ./export.sh
 LOGDIR=./newtest
 mkdir -p "$LOGDIR"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-RUN_LOG="$LOGDIR/memory_${TIMESTAMP}.log"
+RUN_LOG="$LOGDIR/topk_${TIMESTAMP}.log"
 exec > >(tee -a "$RUN_LOG") 2>&1
 
 echo "=== Memory Experiment Started at $(date) ==="
 echo "Log file: $RUN_LOG"
 
 TASK_END=50
-MAX_ITER=50
-MAX_TOKENS=8000
+MAX_ITER=30
+MAX_TOKENS=6000
 BATCH_SIZE=10
 GROUNDING_MODEL_PATH=./model/shakechen/Llama-2-7b-hf
 
@@ -42,27 +42,29 @@ COMMON_ARGS=(
 echo "Running Baseline Experiment..."
 CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   "${COMMON_ARGS[@]}" \
-  --run_name memory_full \
-  --reflection_retrieval_mode episode \
-  --static_reflection_k 2 \
+  --run_name grounding_original \
+  --reflection_retrieval_mode original \
   --reflection_memory_policy full \
   --reflection_memory_size 0
 
 
-echo "Running FIFO Memory Experiment..."
+echo "Running topk Memory Experiment..."
 CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   "${COMMON_ARGS[@]}" \
-  --run_name memory_fifo20 \
-  --reflection_retrieval_mode episode \
-  --static_reflection_k 2 \
-  --reflection_memory_policy fifo \
-  --reflection_memory_size 10
+  --run_name grounding_rerank_top5 \
+  --reflection_retrieval_mode original \
+  --reflection_memory_policy full \
+  --reflection_memory_size 0 \
+  --rerank_after_grounding \
+  --grounding_topk 5
 
-echo "Running LRU Memory Experiment..."
+
+echo "Running topk2 Memory Experiment..."
 CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   "${COMMON_ARGS[@]}" \
-  --run_name memory_lru20 \
-  --reflection_retrieval_mode episode \
-  --static_reflection_k 2 \
-  --reflection_memory_policy lru \
-  --reflection_memory_size 10
+  --run_name grounding_rerank_top10 \
+  --reflection_retrieval_mode original \
+  --reflection_memory_policy full \
+  --reflection_memory_size 0 \
+  --rerank_after_grounding \
+  --grounding_topk 10
