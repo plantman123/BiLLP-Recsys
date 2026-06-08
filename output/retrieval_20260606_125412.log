@@ -1,0 +1,911 @@
+=== Reflection Retrieval Timing Experiment Started at Sat Jun  6 12:54:12 PM CST 2026 ===
+Log file: ./newtest/retrieval_20260606_125412.log
+Using fixed initial memory: steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12
+Running Episode Retrieval Baseline...
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:6: LangChainDeprecationWarning: Importing chat models from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.chat_models import ChatOpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.chat_models import ChatOpenAI
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:6: LangChainDeprecationWarning: Importing chat models from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.chat_models import ChatOpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.chat_models import ChatOpenAI
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:14: LangChainDeprecationWarning: Importing Docstore from langchain.docstore is deprecated. Please replace deprecated imports:
+
+>> from langchain.docstore import Docstore
+
+with new imports of:
+
+>> from langchain_community.docstore.base import Docstore
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.docstore.base import Docstore
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:16: LangChainDeprecationWarning: Importing FAISS from langchain.vectorstores is deprecated. Please replace deprecated imports:
+
+>> from langchain.vectorstores import FAISS
+
+with new imports of:
+
+>> from langchain_community.vectorstores import FAISS
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.vectorstores import FAISS
+steam_test_0_10_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-12-54-23
+./env/steam/steam_test.npy
+reward_mat shape:(190365, 6012)
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.10s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.74s/it]
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:730: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
+Loaded 50 reflections from output/reflections/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.txt
+Loaded 320 actor memory entries from output/memory/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.json
+Loaded 318 critic memory entries from output/critic_memory/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.json
+temp_idxs:[29434, 35297, 64619, 102524, 92137, 65733, 51558, 71342, 106081, 5917]
+Reflecting...
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: The agent recommended Insurgency: Sandstorm, which was substituted with Tribes: Ascend, a game already recommended, causing user boredom and stop. Next plan: Track all recommended items including substitutes, and never recommend an item that has already been presented to the user.
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+- Failure reason: The user stopped after a mismatched substitution (Miner Wars 2081) that did not align with their demonstrated preference for space simulation and action shooters, leading to disinterest. Next plan: Prioritize recommending games from genres with highest past rewards (space simulation, sci-fi action, open-world action) and avoid items likely to be substituted with mismatched titles.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+- Failure reason: Recommendations were mismatched to user's interest in indie, narrative, strategy, and puzzle games, leading to user boredom. Next plan: Recommend games that align with the user's history, focusing on narrative-driven, strategy, or puzzle indie titles, and avoid genres like party or shooter.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+- Failure reason: The agent recommended Insurgency: Sandstorm, which was substituted with Tribes: Ascend, a game already recommended, causing user boredom and stop. Next plan: Track all recommended items including substitutes, and never recommend an item that has already been presented to the user.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+- Failure reason: The agent recommended Insurgency: Sandstorm, which was substituted with Tribes: Ascend, a game already recommended, causing user boredom and stop. Next plan: Track all recommended items including substitutes, and never recommend an item that has already been presented to the user.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: The recommendations deviated from the user's demonstrated preference for action RPGs, leading to disinterest and a stop after a mismatched substitution. Next plan: Prioritize recommending games from genres with highest past rewards (action RPG) and avoid items likely to be substituted with mismatched titles.
+- Failure reason: The agent recommended Insurgency: Sandstorm, which was substituted with Tribes: Ascend, a game already recommended, causing user boredom and stop. Next plan: Track all recommended items including substitutes, and never recommend an item that has already been presented to the user.
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:22,  2.50s/it] 20%|██        | 2/10 [00:02<00:09,  1.15s/it] 30%|███       | 3/10 [00:03<00:05,  1.25it/s] 40%|████      | 4/10 [00:03<00:03,  1.67it/s] 50%|█████     | 5/10 [00:03<00:02,  2.09it/s] 60%|██████    | 6/10 [00:04<00:01,  2.05it/s] 80%|████████  | 8/10 [00:04<00:00,  3.62it/s]100%|██████████| 10/10 [00:04<00:00,  5.17it/s]100%|██████████| 10/10 [00:04<00:00,  2.26it/s]
+According to historical experience, When The user viewing history is [Blockland,Shovel Knight: Treasure Trove,PlanetSide 2,Eldritch,Shantae: Risky's Revenge - Director's Cut], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [LIMBO,Batman™: Arkham Origins,FEIST,Assassin's Creed® Unity], we encourage to recommend Elliot Quest items and not to recommend  items.
+According to historical experience, When The user viewing history is [Age of Empires II HD,Age of Empires II HD,Age of Empires II HD,Galactic Civilizations III,Galactic Civilizations III,Medieval II: Total War™,Stronghold HD], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [Golf With Your Friends,Golf With Your Friends,Brawlhalla,Tales from the Borderlands,Borderlands 2], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [Rust,Rust], we encourage to recommend DayZ items and not to recommend  items.
+According to historical experience, When The user viewing history is [Counter-Strike: Condition Zero,Mount &amp; Blade: Warband,Red Orchestra 2: Heroes of Stalingrad with Rising Storm,This War of Mine], we encourage to recommend Out of Reach,null items and not to recommend  items.
+According to historical experience, When The user viewing history is [Squad,Stonehearth], we encourage to recommend Planetbase items and not to recommend  items.
+According to historical experience, When The user viewing history is [Wayward,Rust,Rust], we encourage to recommend Hurtworld items and not to recommend  items.
+According to historical experience, When The user viewing history is [Undertale,Lethal League,Crawl,Crawl,Grim Fandango Remastered,Samorost 3], we encourage to recommend The Witness items and not to recommend  items.
+According to historical experience, When The user viewing history is [Heroes &amp; Generals,100% Orange Juice,100% Orange Juice,Factorio,Warframe,Zeno Clash 2,Master of Orion,Arma 3,Rust,Factorio], we encourage to recommend Out of Reach items and not to recommend  items.
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:22,  2.45s/it] 20%|██        | 2/10 [00:02<00:09,  1.25s/it] 30%|███       | 3/10 [00:03<00:06,  1.14it/s] 40%|████      | 4/10 [00:03<00:04,  1.42it/s] 50%|█████     | 5/10 [00:04<00:02,  1.68it/s] 80%|████████  | 8/10 [00:05<00:00,  2.45it/s] 90%|█████████ | 9/10 [00:06<00:00,  1.41it/s]100%|██████████| 10/10 [00:08<00:00,  1.14it/s]100%|██████████| 10/10 [00:08<00:00,  1.23it/s]
+Retrying invalid actions: 6
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:02<00:11,  2.35s/it] 33%|███▎      | 2/6 [00:03<00:07,  1.86s/it] 50%|█████     | 3/6 [01:11<01:35, 31.76s/it] 67%|██████▋   | 4/6 [01:14<00:40, 20.40s/it] 83%|████████▎ | 5/6 [01:15<00:13, 13.62s/it]100%|██████████| 6/6 [01:18<00:00,  9.86s/it]100%|██████████| 6/6 [01:18<00:00, 13.06s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.44s/it]100%|██████████| 2/2 [00:06<00:00,  3.23s/it]100%|██████████| 2/2 [00:06<00:00,  3.42s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:06<00:00,  6.64s/it]100%|██████████| 1/1 [00:06<00:00,  6.64s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:11<00:00, 11.06s/it]100%|██████████| 1/1 [00:11<00:00, 11.06s/it]
+Retrying invalid actions: 1
+Invalid actions after retries: 1
+a:['recommend[Bastion]', 'recommend[Elliot Quest]', 'recommend[item]', '', 'recommend[DayZ]', 'recommend[Arma 3]', 'recommend[Planetbase]', 'recommend[Hurtworld]', 'recommend[The Witness]', 'recommend[Out of Reach]']
+0it [00:00, ?it/s]1it [00:00, 21.05it/s]
+0it [00:00, ?it/s]1it [00:00, 27.60it/s]
+0it [00:00, ?it/s]1it [00:00, 31.69it/s]
+0it [00:00, ?it/s]1it [00:00, 26.00it/s]
+0it [00:00, ?it/s]1it [00:00, 29.78it/s]
+0it [00:00, ?it/s]1it [00:00, 26.97it/s]
+0it [00:00, ?it/s]1it [00:00, 31.95it/s]
+0it [00:00, ?it/s]1it [00:00, 26.77it/s]
+0it [00:00, ?it/s]1it [00:00, 31.66it/s]
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:19,  2.15s/it] 20%|██        | 2/10 [00:02<00:07,  1.03it/s] 30%|███       | 3/10 [00:02<00:04,  1.65it/s] 50%|█████     | 5/10 [00:02<00:01,  2.83it/s] 60%|██████    | 6/10 [00:03<00:01,  2.34it/s] 80%|████████  | 8/10 [00:06<00:01,  1.20it/s]100%|██████████| 10/10 [00:06<00:00,  1.59it/s]100%|██████████| 10/10 [00:06<00:00,  1.50it/s]
+2
+  0%|          | 0/9 [00:00<?, ?it/s] 11%|█         | 1/9 [00:02<00:20,  2.53s/it] 22%|██▏       | 2/9 [00:03<00:09,  1.35s/it] 44%|████▍     | 4/9 [00:03<00:03,  1.34it/s] 56%|█████▌    | 5/9 [00:04<00:02,  1.74it/s] 67%|██████▋   | 6/9 [00:04<00:01,  2.14it/s] 78%|███████▊  | 7/9 [00:04<00:00,  2.01it/s] 89%|████████▉ | 8/9 [00:06<00:00,  1.40it/s]100%|██████████| 9/9 [00:08<00:00,  1.16s/it]100%|██████████| 9/9 [00:08<00:00,  1.09it/s]
+
+According to historical experience, When The user viewing history is [LIMBO,Batman™: Arkham Origins,FEIST,Assassin's Creed® Unity,Elliot Quest], we encourage to recommend  items and not to recommend Elliot Quest items.
+According to historical experience, When The user viewing history is [Age of Empires II HD,Age of Empires II HD,Age of Empires II HD,Galactic Civilizations III,Galactic Civilizations III,Medieval II: Total War™,Stronghold HD,Out of Reach], we encourage to recommend  items and not to recommend Out of Reach items.
+According to historical experience, When The user viewing history is [Rust,Rust,DayZ], we encourage to recommend Out of Reach items and not to recommend  items.
+
+According to historical experience, When The user viewing history is [Squad,Stonehearth,Planetbase], we encourage to recommend  items and not to recommend Planetbase items.
+According to historical experience, When The user viewing history is [Wayward,Rust,Rust,Hurtworld], we encourage to recommend Major\Minor items and not to recommend  items.
+According to historical experience, When The user viewing history is [Undertale,Lethal League,Crawl,Crawl,Grim Fandango Remastered,Samorost 3,The Witness], we encourage to recommend  items and not to recommend Tokyo Hosto items.
+According to historical experience, When The user viewing history is [100% Orange Juice,100% Orange Juice,Factorio,Warframe,Zeno Clash 2,Master of Orion,Arma 3,Rust,Factorio,Out of Reach], we encourage to recommend  items and not to recommend Out of Reach items.
+  0%|          | 0/9 [00:00<?, ?it/s] 11%|█         | 1/9 [00:01<00:13,  1.65s/it] 22%|██▏       | 2/9 [00:02<00:10,  1.45s/it] 33%|███▎      | 3/9 [00:03<00:05,  1.09it/s] 44%|████▍     | 4/9 [00:03<00:03,  1.62it/s] 56%|█████▌    | 5/9 [00:03<00:02,  1.95it/s] 67%|██████▋   | 6/9 [00:04<00:02,  1.41it/s] 89%|████████▉ | 8/9 [00:06<00:00,  1.31it/s]100%|██████████| 9/9 [00:08<00:00,  1.00it/s]100%|██████████| 9/9 [00:08<00:00,  1.11it/s]
+Retrying invalid actions: 4
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:06,  2.22s/it] 50%|█████     | 2/4 [00:04<00:04,  2.20s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.35s/it]100%|██████████| 4/4 [00:06<00:00,  1.47s/it]100%|██████████| 4/4 [00:06<00:00,  1.60s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.57s/it]100%|██████████| 1/1 [00:01<00:00,  1.57s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.59s/it]100%|██████████| 1/1 [00:01<00:00,  1.59s/it]
+a:['recommend[item]', 'recommend[Inside]', 'recommend[Civilization V]', 'recommend[DayZ]', 'recommend[Squad]', 'recommend[Insurgency: Sandstorm]', 'recommend[The Forest]', 'recommend[Braid]', 'recommend[Destiny 2]']
+0it [00:00, ?it/s]1it [00:00, 22.95it/s]
+0it [00:00, ?it/s]1it [00:00, 25.83it/s]
+0it [00:00, ?it/s]1it [00:00, 22.73it/s]
+0it [00:00, ?it/s]1it [00:00, 24.15it/s]
+0it [00:00, ?it/s]1it [00:00, 23.87it/s]
+0it [00:00, ?it/s]1it [00:00, 23.95it/s]
+0it [00:00, ?it/s]1it [00:00, 25.51it/s]
+0it [00:00, ?it/s]1it [00:00, 26.92it/s]
+0it [00:00, ?it/s]1it [00:00, 26.44it/s]
+userid:110603; item:Pressured; history_item:Elliot Quest; distance:756.3867797851562, reward: 1
+userid:174359; item:DayZ; history_item:DayZ; distance:0.0, reward: 5
+userid:133780; item:Tribes: Ascend; history_item:Planetbase; distance:568.3396606445312, reward: 1
+  0%|          | 0/9 [00:00<?, ?it/s] 11%|█         | 1/9 [00:02<00:18,  2.34s/it] 22%|██▏       | 2/9 [00:02<00:09,  1.30s/it] 33%|███▎      | 3/9 [00:03<00:04,  1.30it/s] 44%|████▍     | 4/9 [00:03<00:03,  1.32it/s] 56%|█████▌    | 5/9 [00:05<00:04,  1.10s/it] 67%|██████▋   | 6/9 [00:06<00:02,  1.08it/s] 78%|███████▊  | 7/9 [00:07<00:01,  1.01it/s] 89%|████████▉ | 8/9 [00:07<00:00,  1.25it/s]100%|██████████| 9/9 [00:09<00:00,  1.17s/it]100%|██████████| 9/9 [00:09<00:00,  1.06s/it]
+3
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:03<00:18,  3.79s/it] 33%|███▎      | 2/6 [00:04<00:08,  2.05s/it] 50%|█████     | 3/6 [00:06<00:05,  1.98s/it] 83%|████████▎ | 5/6 [00:06<00:00,  1.12it/s]100%|██████████| 6/6 [00:13<00:00,  2.63s/it]100%|██████████| 6/6 [00:13<00:00,  2.26s/it]
+
+
+
+
+
+
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:03<00:15,  3.18s/it] 33%|███▎      | 2/6 [00:04<00:08,  2.03s/it] 67%|██████▋   | 4/6 [00:05<00:01,  1.05it/s] 83%|████████▎ | 5/6 [00:16<00:04,  4.08s/it]100%|██████████| 6/6 [00:22<00:00,  4.69s/it]100%|██████████| 6/6 [00:22<00:00,  3.69s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:01<00:01,  1.82s/it]100%|██████████| 2/2 [00:06<00:00,  3.38s/it]100%|██████████| 2/2 [00:06<00:00,  3.15s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.22s/it]100%|██████████| 1/1 [00:04<00:00,  4.22s/it]
+a:['recommend[The Binding of Isaac]', 'recommend[The Sims 4]', 'recommend[Rising Storm 2: Vietnam]', 'recommend[The Forest]', 'recommend[Limbo]', 'recommend[Screeps]']
+0it [00:00, ?it/s]1it [00:00, 24.56it/s]
+0it [00:00, ?it/s]1it [00:00, 24.68it/s]
+0it [00:00, ?it/s]1it [00:00, 25.60it/s]
+0it [00:00, ?it/s]1it [00:00, 26.24it/s]
+0it [00:00, ?it/s]1it [00:00, 25.79it/s]
+0it [00:00, ?it/s]1it [00:00, 26.69it/s]
+userid:153564; item:Keen Dreams; history_item:Keen Dreams; distance:0.0, reward: 3
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:02<00:10,  2.04s/it] 33%|███▎      | 2/6 [00:02<00:05,  1.30s/it] 67%|██████▋   | 4/6 [00:03<00:01,  1.80it/s] 83%|████████▎ | 5/6 [00:05<00:01,  1.09s/it]100%|██████████| 6/6 [00:07<00:00,  1.37s/it]100%|██████████| 6/6 [00:07<00:00,  1.22s/it]
+4
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:04<00:17,  4.39s/it] 40%|████      | 2/5 [00:05<00:08,  2.74s/it] 60%|██████    | 3/5 [00:06<00:03,  1.71s/it] 80%|████████  | 4/5 [00:10<00:02,  2.50s/it]100%|██████████| 5/5 [00:11<00:00,  2.18s/it]100%|██████████| 5/5 [00:11<00:00,  2.36s/it]
+
+
+
+
+According to historical experience, When The user viewing history is [Factorio,Warframe,Zeno Clash 2,Master of Orion,Arma 3,Rust,Factorio,Out of Reach,Dungeon Defenders Eternity,Rising World], we encourage to recommend Out of Reach items and not to recommend  items.
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:14,  3.59s/it] 40%|████      | 2/5 [00:03<00:05,  1.70s/it] 60%|██████    | 3/5 [00:04<00:02,  1.00s/it] 80%|████████  | 4/5 [00:06<00:01,  1.68s/it]100%|██████████| 5/5 [00:09<00:00,  2.02s/it]100%|██████████| 5/5 [00:09<00:00,  1.89s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.70s/it]100%|██████████| 2/2 [00:07<00:00,  3.97s/it]100%|██████████| 2/2 [00:07<00:00,  3.93s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.43s/it]100%|██████████| 1/1 [00:07<00:00,  7.43s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:08<00:00,  8.81s/it]100%|██████████| 1/1 [00:08<00:00,  8.81s/it]
+a:['recommend[Terraria]', 'recommend[StarCraft II]', 'recommend[Hell Let Loose]', 'recommend[Fez]', 'recommend[Satisfactory]']
+0it [00:00, ?it/s]1it [00:00, 26.13it/s]
+0it [00:00, ?it/s]1it [00:00, 29.57it/s]
+0it [00:00, ?it/s]1it [00:00, 27.14it/s]
+0it [00:00, ?it/s]1it [00:00, 31.21it/s]
+0it [00:00, ?it/s]1it [00:00, 26.13it/s]
+userid:188303; item:Tokyo Hosto; history_item:Hush; distance:988.230712890625, reward: 1
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:02<00:08,  2.17s/it] 60%|██████    | 3/5 [00:02<00:01,  1.47it/s] 80%|████████  | 4/5 [00:05<00:01,  1.36s/it]100%|██████████| 5/5 [00:05<00:00,  1.05s/it]
+5
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:07<00:21,  7.05s/it] 75%|███████▌  | 3/4 [00:07<00:01,  1.87s/it]100%|██████████| 4/4 [00:10<00:00,  2.52s/it]100%|██████████| 4/4 [00:10<00:00,  2.73s/it]
+
+
+
+
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:06,  2.28s/it] 50%|█████     | 2/4 [00:02<00:02,  1.08s/it] 75%|███████▌  | 3/4 [00:03<00:00,  1.15it/s]100%|██████████| 4/4 [00:10<00:00,  3.29s/it]100%|██████████| 4/4 [00:10<00:00,  2.54s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.04s/it]100%|██████████| 1/1 [00:03<00:00,  3.04s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.12s/it]100%|██████████| 1/1 [00:07<00:00,  7.12s/it]
+a:['recommend[Stardew Valley]', 'recommend[Age of Empires III]', 'recommend[Battlefield 1]', 'recommend[Borderlands 3]']
+0it [00:00, ?it/s]1it [00:00, 18.46it/s]
+0it [00:00, ?it/s]1it [00:00, 11.71it/s]
+0it [00:00, ?it/s]1it [00:00,  9.63it/s]1it [00:00,  9.61it/s]
+0it [00:00, ?it/s]1it [00:00, 22.80it/s]
+userid:147955; item:Arma 3; history_item:Arma 3; distance:0.0, reward: 5
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:07,  2.47s/it] 50%|█████     | 2/4 [00:03<00:03,  1.64s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.13s/it]100%|██████████| 4/4 [00:04<00:00,  1.38it/s]100%|██████████| 4/4 [00:04<00:00,  1.04s/it]
+6
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:04<00:08,  4.42s/it] 67%|██████▋   | 2/3 [00:06<00:02,  2.91s/it]100%|██████████| 3/3 [00:08<00:00,  2.80s/it]100%|██████████| 3/3 [00:08<00:00,  2.98s/it]
+
+
+
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:01<00:03,  1.75s/it] 67%|██████▋   | 2/3 [00:04<00:02,  2.41s/it]100%|██████████| 3/3 [00:07<00:00,  2.52s/it]100%|██████████| 3/3 [00:07<00:00,  2.43s/it]
+a:['recommend[Hotline Miami]', 'recommend[Kingdoms and Castles]', 'recommend[Stellaris]']
+0it [00:00, ?it/s]1it [00:00, 30.18it/s]
+0it [00:00, ?it/s]1it [00:00, 26.22it/s]
+0it [00:00, ?it/s]1it [00:00, 30.19it/s]
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:05,  2.53s/it]100%|██████████| 3/3 [00:03<00:00,  1.06it/s]100%|██████████| 3/3 [00:03<00:00,  1.10s/it]
+7
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:04<00:08,  4.03s/it] 67%|██████▋   | 2/3 [00:05<00:02,  2.48s/it]100%|██████████| 3/3 [00:06<00:00,  2.00s/it]100%|██████████| 3/3 [00:06<00:00,  2.28s/it]
+
+
+According to historical experience, When The user viewing history is [Master of Orion,Arma 3,Rust,Factorio,Out of Reach,Dungeon Defenders Eternity,Rising World,Industry Giant 2,Borderlands 2,Star Ruler], we encourage to recommend Warface items and not to recommend  items.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:05,  2.85s/it] 67%|██████▋   | 2/3 [00:05<00:02,  2.54s/it]100%|██████████| 3/3 [00:08<00:00,  2.77s/it]100%|██████████| 3/3 [00:08<00:00,  2.74s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.34s/it]100%|██████████| 1/1 [00:03<00:00,  3.34s/it]
+a:['recommend[Rocket League]', 'recommend[The Witcher 3: Wild Hunt]', 'recommend[Warface]']
+0it [00:00, ?it/s]1it [00:00, 23.91it/s]
+0it [00:00, ?it/s]1it [00:00, 15.34it/s]
+0it [00:00, ?it/s]1it [00:00, 24.21it/s]
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:04,  2.21s/it] 67%|██████▋   | 2/3 [00:02<00:01,  1.01s/it]100%|██████████| 3/3 [00:02<00:00,  1.66it/s]100%|██████████| 3/3 [00:02<00:00,  1.20it/s]
+8
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:04<00:08,  4.41s/it] 67%|██████▋   | 2/3 [00:06<00:03,  3.29s/it]100%|██████████| 3/3 [00:07<00:00,  1.94s/it]100%|██████████| 3/3 [00:07<00:00,  2.42s/it]
+According to historical experience, When The user viewing history is [PlanetSide 2,Eldritch,Shantae: Risky's Revenge - Director's Cut,Bastion,Out of Reach,The Binding of Isaac,A Valley Without Wind 2,AdVenture Capitalist,Hotline Miami,Move or Die], we encourage to recommend  items and not to recommend Super Meat Boy items.
+
+
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:05,  2.67s/it] 67%|██████▋   | 2/3 [00:03<00:01,  1.32s/it]100%|██████████| 3/3 [00:03<00:00,  1.05it/s]100%|██████████| 3/3 [00:03<00:00,  1.19s/it]
+a:['recommend[Hollow Knight]', 'recommend[Stellaris]', 'recommend[Path of Exile]']
+0it [00:00, ?it/s]1it [00:00, 11.01it/s]
+0it [00:00, ?it/s]1it [00:00, 13.79it/s]
+0it [00:00, ?it/s]1it [00:00, 14.24it/s]
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:05<00:10,  5.03s/it] 67%|██████▋   | 2/3 [00:05<00:02,  2.56s/it]100%|██████████| 3/3 [00:08<00:00,  2.55s/it]100%|██████████| 3/3 [00:08<00:00,  2.80s/it]
+9
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:04<00:08,  4.02s/it] 67%|██████▋   | 2/3 [00:04<00:02,  2.18s/it]100%|██████████| 3/3 [00:07<00:00,  2.28s/it]100%|██████████| 3/3 [00:07<00:00,  2.44s/it]
+According to historical experience, When The user viewing history is [Eldritch,Shantae: Risky's Revenge - Director's Cut,Bastion,Out of Reach,The Binding of Isaac,A Valley Without Wind 2,AdVenture Capitalist,Hotline Miami,Move or Die,Elliot Quest], we encourage to recommend  items and not to recommend Super Meat Boy items.
+
+
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:06,  3.41s/it] 67%|██████▋   | 2/3 [00:03<00:01,  1.69s/it]100%|██████████| 3/3 [00:05<00:00,  1.54s/it]100%|██████████| 3/3 [00:05<00:00,  1.76s/it]
+a:['recommend[Limbo]', 'recommend[Age of Empires IV]', 'recommend[Stardew Valley]']
+0it [00:00, ?it/s]1it [00:00, 15.52it/s]
+0it [00:00, ?it/s]1it [00:00, 16.85it/s]
+0it [00:00, ?it/s]1it [00:00, 22.83it/s]
+userid:146841; item:Age of Empires II HD; history_item:Age of Empires II HD; distance:0.0, reward: 5
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:04,  2.05s/it] 67%|██████▋   | 2/3 [00:02<00:00,  1.04it/s]100%|██████████| 3/3 [00:03<00:00,  1.19s/it]100%|██████████| 3/3 [00:03<00:00,  1.23s/it]
+10
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.75s/it]100%|██████████| 2/2 [00:05<00:00,  2.41s/it]100%|██████████| 2/2 [00:05<00:00,  2.61s/it]
+According to historical experience, When The user viewing history is [Shantae: Risky's Revenge - Director's Cut,Bastion,Out of Reach,The Binding of Isaac,A Valley Without Wind 2,AdVenture Capitalist,Hotline Miami,Move or Die,Elliot Quest,Hush], we encourage to recommend  items and not to recommend Super Meat Boy items.
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:05<00:05,  5.23s/it]100%|██████████| 2/2 [00:07<00:00,  3.64s/it]100%|██████████| 2/2 [00:07<00:00,  3.88s/it]
+a:['recommend[Cities: Skylines]', 'recommend[Grim Dawn]']
+0it [00:00, ?it/s]1it [00:00, 23.35it/s]
+0it [00:00, ?it/s]1it [00:00, 27.30it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:01<00:01,  1.51s/it]100%|██████████| 2/2 [00:04<00:00,  2.29s/it]100%|██████████| 2/2 [00:04<00:00,  2.18s/it]
+11
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.14s/it]100%|██████████| 2/2 [00:04<00:00,  2.07s/it]
+According to historical experience, When The user viewing history is [Bastion,Out of Reach,The Binding of Isaac,A Valley Without Wind 2,AdVenture Capitalist,Hotline Miami,Move or Die,Elliot Quest,Hush,Cities in Motion 2], we encourage to recommend Borderlands 2 items and not to recommend  items.
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.97s/it]100%|██████████| 2/2 [00:05<00:00,  2.12s/it]100%|██████████| 2/2 [00:05<00:00,  2.55s/it]
+a:['recommend[Super Meat Boy]', 'recommend[EVE Online]']
+0it [00:00, ?it/s]1it [00:00, 22.76it/s]
+0it [00:00, ?it/s]1it [00:00, 22.44it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:01<00:01,  1.94s/it]100%|██████████| 2/2 [00:01<00:00,  1.01it/s]
+12
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:06<00:06,  6.06s/it]100%|██████████| 2/2 [00:06<00:00,  3.02s/it]100%|██████████| 2/2 [00:06<00:00,  3.48s/it]
+According to historical experience, When The user viewing history is [Out of Reach,The Binding of Isaac,A Valley Without Wind 2,AdVenture Capitalist,Hotline Miami,Move or Die,Elliot Quest,Hush,Cities in Motion 2,Super Meat Boy], we encourage to recommend Foosball: World Tour items and not to recommend  items.
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.50s/it]100%|██████████| 2/2 [00:05<00:00,  2.83s/it]100%|██████████| 2/2 [00:05<00:00,  2.78s/it]
+a:['recommend[Super Meat Boy]', 'recommend[Mindustry]']
+0it [00:00, ?it/s]1it [00:00, 21.54it/s]
+0it [00:00, ?it/s]1it [00:00, 10.71it/s]
+userid:88719; item:Super Meat Boy; history_item:Super Meat Boy; distance:0.0, reward: 5
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.91s/it]100%|██████████| 2/2 [00:09<00:00,  5.04s/it]100%|██████████| 2/2 [00:09<00:00,  4.72s/it]
+13
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.70s/it]100%|██████████| 1/1 [00:05<00:00,  5.70s/it]
+
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.93s/it]100%|██████████| 1/1 [00:03<00:00,  3.93s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:10<00:00, 10.16s/it]100%|██████████| 1/1 [00:10<00:00, 10.16s/it]
+a:['recommend[item]']
+0it [00:00, ?it/s]1it [00:00, 23.84it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.91s/it]100%|██████████| 1/1 [00:01<00:00,  1.91s/it]
+14
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.91s/it]100%|██████████| 1/1 [00:02<00:00,  2.91s/it]
+According to historical experience, When The user viewing history is [Industry Giant 2,Borderlands 2,Star Ruler,Warface,Shakes and Fidget,AdVenture Capitalist,Grim Dawn,EVE Online,Blockstorm,Out of Reach], we encourage to recommend Killing Floor 2 items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.01s/it]100%|██████████| 1/1 [00:07<00:00,  7.01s/it]
+a:['recommend[Killing Floor 2]']
+0it [00:00, ?it/s]1it [00:00, 22.52it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.87s/it]100%|██████████| 1/1 [00:01<00:00,  1.87s/it]
+15
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.59s/it]100%|██████████| 1/1 [00:02<00:00,  2.59s/it]
+
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.77s/it]100%|██████████| 1/1 [00:02<00:00,  2.77s/it]
+a:['recommend[Apex Legends]']
+0it [00:00, ?it/s]1it [00:00, 25.02it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.82s/it]100%|██████████| 1/1 [00:02<00:00,  2.82s/it]
+16
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.29s/it]100%|██████████| 1/1 [00:02<00:00,  2.29s/it]
+
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.36s/it]100%|██████████| 1/1 [00:05<00:00,  5.36s/it]
+a:['recommend[Torchlight II]']
+0it [00:00, ?it/s]1it [00:00, 20.78it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:08<00:00,  8.10s/it]100%|██████████| 1/1 [00:08<00:00,  8.10s/it]
+17
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:06<00:00,  6.49s/it]100%|██████████| 1/1 [00:06<00:00,  6.49s/it]
+
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.67s/it]100%|██████████| 1/1 [00:04<00:00,  4.67s/it]
+a:['recommend[Valheim]']
+0it [00:00, ?it/s]1it [00:00, 15.87it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.67s/it]100%|██████████| 1/1 [00:01<00:00,  1.67s/it]
+18
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.14s/it]100%|██████████| 1/1 [00:02<00:00,  2.14s/it]
+
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.32s/it]100%|██████████| 1/1 [00:02<00:00,  2.32s/it]
+a:['recommend[Valheim]']
+0it [00:00, ?it/s]1it [00:00, 23.11it/s]
+userid:16271; item:Project Zomboid; history_item:Project Zomboid; distance:0.0, reward: 5
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.87s/it]100%|██████████| 1/1 [00:01<00:00,  1.87s/it]
+19
+Reflecting...
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:20,  2.30s/it] 20%|██        | 2/10 [00:03<00:11,  1.41s/it] 30%|███       | 3/10 [00:05<00:11,  1.68s/it] 50%|█████     | 5/10 [00:05<00:03,  1.26it/s] 60%|██████    | 6/10 [00:05<00:02,  1.67it/s] 70%|███████   | 7/10 [00:05<00:01,  1.88it/s] 80%|████████  | 8/10 [00:06<00:00,  2.18it/s] 90%|█████████ | 9/10 [00:06<00:00,  1.87it/s]100%|██████████| 10/10 [00:08<00:00,  1.12it/s]100%|██████████| 10/10 [00:08<00:00,  1.17it/s]
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:08,  2.89s/it] 50%|█████     | 2/4 [00:03<00:02,  1.39s/it]100%|██████████| 4/4 [00:07<00:00,  1.78s/it]100%|██████████| 4/4 [00:07<00:00,  1.81s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.24s/it]100%|██████████| 1/1 [00:02<00:00,  2.24s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.20s/it]100%|██████████| 1/1 [00:03<00:00,  3.20s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.89s/it]100%|██████████| 1/1 [00:03<00:00,  3.89s/it]
+Running Dynamic Retrieval Experiment...
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:6: LangChainDeprecationWarning: Importing chat models from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.chat_models import ChatOpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.chat_models import ChatOpenAI
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:6: LangChainDeprecationWarning: Importing chat models from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.chat_models import ChatOpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.chat_models import ChatOpenAI
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:14: LangChainDeprecationWarning: Importing Docstore from langchain.docstore is deprecated. Please replace deprecated imports:
+
+>> from langchain.docstore import Docstore
+
+with new imports of:
+
+>> from langchain_community.docstore.base import Docstore
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.docstore.base import Docstore
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:16: LangChainDeprecationWarning: Importing FAISS from langchain.vectorstores is deprecated. Please replace deprecated imports:
+
+>> from langchain.vectorstores import FAISS
+
+with new imports of:
+
+>> from langchain_community.vectorstores import FAISS
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.vectorstores import FAISS
+steam_test_0_10_deepseek-v4-flash_0.5_retrieval_dynamic_k2_2026-06-06-13-03-42
+./env/steam/steam_test.npy
+reward_mat shape:(190365, 6012)
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.37s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  2.81s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.05s/it]
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:730: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
+Loaded 50 reflections from output/reflections/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.txt
+Loaded 320 actor memory entries from output/memory/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.json
+Loaded 318 critic memory entries from output/critic_memory/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.json
+temp_idxs:[29434, 35297, 64619, 102524, 92137, 65733, 51558, 71342, 106081, 5917]
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:23,  2.58s/it] 20%|██        | 2/10 [00:02<00:10,  1.28s/it] 30%|███       | 3/10 [00:03<00:05,  1.35it/s] 40%|████      | 4/10 [00:03<00:03,  1.80it/s] 50%|█████     | 5/10 [00:03<00:02,  2.11it/s] 70%|███████   | 7/10 [00:03<00:00,  3.83it/s] 80%|████████  | 8/10 [00:03<00:00,  4.01it/s] 90%|█████████ | 9/10 [00:04<00:00,  3.92it/s]100%|██████████| 10/10 [00:04<00:00,  3.65it/s]100%|██████████| 10/10 [00:04<00:00,  2.19it/s]
+According to historical experience, When The user viewing history is [Blockland,Shovel Knight: Treasure Trove,PlanetSide 2,Eldritch,Shantae: Risky's Revenge - Director's Cut], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [LIMBO,Batman™: Arkham Origins,FEIST,Assassin's Creed® Unity], we encourage to recommend Elliot Quest items and not to recommend  items.
+According to historical experience, When The user viewing history is [Age of Empires II HD,Age of Empires II HD,Age of Empires II HD,Galactic Civilizations III,Galactic Civilizations III,Medieval II: Total War™,Stronghold HD], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [Golf With Your Friends,Golf With Your Friends,Brawlhalla,Tales from the Borderlands,Borderlands 2], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [Rust,Rust], we encourage to recommend DayZ items and not to recommend  items.
+According to historical experience, When The user viewing history is [Counter-Strike: Condition Zero,Mount &amp; Blade: Warband,Red Orchestra 2: Heroes of Stalingrad with Rising Storm,This War of Mine], we encourage to recommend Out of Reach,null items and not to recommend  items.
+According to historical experience, When The user viewing history is [Squad,Stonehearth], we encourage to recommend Planetbase items and not to recommend  items.
+According to historical experience, When The user viewing history is [Wayward,Rust,Rust], we encourage to recommend Hurtworld items and not to recommend  items.
+According to historical experience, When The user viewing history is [Undertale,Lethal League,Crawl,Crawl,Grim Fandango Remastered,Samorost 3], we encourage to recommend The Witness items and not to recommend  items.
+According to historical experience, When The user viewing history is [Heroes &amp; Generals,100% Orange Juice,100% Orange Juice,Factorio,Warframe,Zeno Clash 2,Master of Orion,Arma 3,Rust,Factorio], we encourage to recommend Out of Reach items and not to recommend  items.
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:03<00:27,  3.04s/it] 20%|██        | 2/10 [00:04<00:18,  2.30s/it] 30%|███       | 3/10 [00:05<00:10,  1.54s/it] 60%|██████    | 6/10 [00:05<00:02,  1.63it/s] 70%|███████   | 7/10 [00:06<00:01,  1.91it/s] 80%|████████  | 8/10 [00:06<00:01,  1.87it/s] 90%|█████████ | 9/10 [00:06<00:00,  2.13it/s]100%|██████████| 10/10 [00:07<00:00,  1.42it/s]
+Retrying invalid actions: 5
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:03<00:14,  3.58s/it] 40%|████      | 2/5 [00:04<00:06,  2.07s/it] 60%|██████    | 3/5 [00:07<00:04,  2.24s/it] 80%|████████  | 4/5 [00:07<00:01,  1.62s/it]100%|██████████| 5/5 [00:07<00:00,  1.12s/it]100%|██████████| 5/5 [00:07<00:00,  1.59s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.32s/it]100%|██████████| 2/2 [00:07<00:00,  3.91s/it]100%|██████████| 2/2 [00:07<00:00,  3.97s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:08<00:00,  8.66s/it]100%|██████████| 1/1 [00:08<00:00,  8.66s/it]
+a:['recommend[Out of Reach]', 'recommend[Elliot Quest]', 'recommend[Some Game]', 'recommend[Borderlands 3]', 'recommend[DayZ]', 'recommend[Arma 3]', 'recommend[Planetbase]', 'recommend[Hurtworld]', 'recommend[The Witness]', 'recommend[Borderlands 3]']
+0it [00:00, ?it/s]1it [00:00, 16.98it/s]
+0it [00:00, ?it/s]1it [00:00, 23.53it/s]
+0it [00:00, ?it/s]1it [00:00, 28.89it/s]
+0it [00:00, ?it/s]1it [00:00, 24.15it/s]
+0it [00:00, ?it/s]1it [00:00, 28.83it/s]
+0it [00:00, ?it/s]1it [00:00, 20.42it/s]
+0it [00:00, ?it/s]1it [00:00, 25.26it/s]
+0it [00:00, ?it/s]1it [00:00, 23.88it/s]
+0it [00:00, ?it/s]1it [00:00, 27.24it/s]
+0it [00:00, ?it/s]1it [00:00, 24.69it/s]
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:01<00:13,  1.55s/it] 20%|██        | 2/10 [00:02<00:08,  1.12s/it] 30%|███       | 3/10 [00:02<00:05,  1.36it/s] 40%|████      | 4/10 [00:02<00:02,  2.01it/s] 60%|██████    | 6/10 [00:03<00:01,  3.20it/s] 70%|███████   | 7/10 [00:03<00:01,  2.45it/s] 80%|████████  | 8/10 [00:04<00:01,  1.95it/s] 90%|█████████ | 9/10 [00:05<00:00,  1.81it/s]100%|██████████| 10/10 [00:06<00:00,  1.31it/s]100%|██████████| 10/10 [00:06<00:00,  1.55it/s]
+2
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:01<00:17,  1.92s/it] 20%|██        | 2/10 [00:04<00:16,  2.11s/it] 90%|█████████ | 9/10 [00:05<00:00,  2.45it/s]100%|██████████| 10/10 [00:11<00:00,  1.34s/it]100%|██████████| 10/10 [00:11<00:00,  1.17s/it]
+According to historical experience, When The user viewing history is [Blockland,Shovel Knight: Treasure Trove,PlanetSide 2,Eldritch,Shantae: Risky's Revenge - Director's Cut,Out of Reach], we encourage to recommend Super Meat Boy items and not to recommend  items.
+According to historical experience, When The user viewing history is [LIMBO,Batman™: Arkham Origins,FEIST,Assassin's Creed® Unity,Elliot Quest], we encourage to recommend  items and not to recommend Elliot Quest items.
+
+According to historical experience, When The user viewing history is [Golf With Your Friends,Golf With Your Friends,Brawlhalla,Tales from the Borderlands,Borderlands 2,Borderlands 2], we encourage to recommend Out of Reach,Borderlands 2 items and not to recommend  items.
+According to historical experience, When The user viewing history is [Rust,Rust,DayZ], we encourage to recommend Out of Reach items and not to recommend  items.
+
+According to historical experience, When The user viewing history is [Squad,Stonehearth,Planetbase], we encourage to recommend  items and not to recommend Planetbase items.
+According to historical experience, When The user viewing history is [Wayward,Rust,Rust,Hurtworld], we encourage to recommend Major\Minor items and not to recommend  items.
+According to historical experience, When The user viewing history is [Undertale,Lethal League,Crawl,Crawl,Grim Fandango Remastered,Samorost 3,The Witness], we encourage to recommend  items and not to recommend Tokyo Hosto items.
+
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:18,  2.09s/it] 20%|██        | 2/10 [00:02<00:10,  1.36s/it] 30%|███       | 3/10 [00:03<00:06,  1.16it/s] 40%|████      | 4/10 [00:03<00:03,  1.53it/s] 50%|█████     | 5/10 [00:04<00:04,  1.19it/s] 60%|██████    | 6/10 [00:05<00:02,  1.47it/s] 70%|███████   | 7/10 [00:06<00:02,  1.09it/s] 80%|████████  | 8/10 [00:06<00:01,  1.46it/s] 90%|█████████ | 9/10 [00:09<00:01,  1.26s/it]100%|██████████| 10/10 [00:12<00:00,  1.86s/it]100%|██████████| 10/10 [00:12<00:00,  1.24s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.56s/it]100%|██████████| 1/1 [00:04<00:00,  4.56s/it]
+a:['recommend[Super Meat Boy]', 'recommend[Hollow Knight]', 'recommend[StarCraft II]', 'recommend[The Wolf Among Us]', 'recommend[DayZ]', 'recommend[Squad]', 'recommend[Insurgency: Sandstorm]', 'recommend[The Forest]', 'recommend[Into the Breach]', 'recommend[Mindustry]']
+0it [00:00, ?it/s]1it [00:00, 22.79it/s]
+0it [00:00, ?it/s]1it [00:00, 26.47it/s]
+0it [00:00, ?it/s]1it [00:00, 26.08it/s]
+0it [00:00, ?it/s]1it [00:00, 27.04it/s]
+0it [00:00, ?it/s]1it [00:00, 24.11it/s]
+0it [00:00, ?it/s]1it [00:00, 27.12it/s]
+0it [00:00, ?it/s]1it [00:00, 25.95it/s]
+0it [00:00, ?it/s]1it [00:00, 27.96it/s]
+0it [00:00, ?it/s]1it [00:00, 25.13it/s]
+0it [00:00, ?it/s]1it [00:00, 24.99it/s]
+userid:110603; item:Elliot Quest; history_item:Elliot Quest; distance:0.0, reward: 4
+userid:174359; item:DayZ; history_item:DayZ; distance:0.0, reward: 5
+userid:133780; item:Tribes: Ascend; history_item:Planetbase; distance:568.3396606445312, reward: 1
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:01<00:16,  1.80s/it] 20%|██        | 2/10 [00:01<00:06,  1.24it/s] 50%|█████     | 5/10 [00:02<00:01,  2.62it/s] 60%|██████    | 6/10 [00:03<00:01,  2.32it/s] 80%|████████  | 8/10 [00:03<00:00,  2.92it/s] 90%|█████████ | 9/10 [00:03<00:00,  2.76it/s]100%|██████████| 10/10 [00:07<00:00,  1.19s/it]100%|██████████| 10/10 [00:07<00:00,  1.30it/s]
+3
+  0%|          | 0/7 [00:00<?, ?it/s] 14%|█▍        | 1/7 [00:04<00:27,  4.61s/it] 29%|██▊       | 2/7 [00:04<00:10,  2.05s/it] 43%|████▎     | 3/7 [00:06<00:06,  1.68s/it] 57%|█████▋    | 4/7 [00:06<00:03,  1.24s/it] 71%|███████▏  | 5/7 [00:06<00:01,  1.18it/s] 86%|████████▌ | 6/7 [00:07<00:00,  1.47it/s]100%|██████████| 7/7 [00:15<00:00,  3.10s/it]100%|██████████| 7/7 [00:15<00:00,  2.18s/it]
+According to historical experience, When The user viewing history is [Blockland,Shovel Knight: Treasure Trove,PlanetSide 2,Eldritch,Shantae: Risky's Revenge - Director's Cut,Out of Reach,Super Meat Boy], we encourage to recommend  items and not to recommend Super Meat Boy items.
+
+
+
+
+
+
+  0%|          | 0/7 [00:00<?, ?it/s] 14%|█▍        | 1/7 [00:02<00:14,  2.36s/it] 29%|██▊       | 2/7 [00:03<00:07,  1.45s/it] 43%|████▎     | 3/7 [00:05<00:07,  1.89s/it] 57%|█████▋    | 4/7 [00:07<00:05,  1.85s/it] 71%|███████▏  | 5/7 [00:08<00:03,  1.68s/it] 86%|████████▌ | 6/7 [00:09<00:01,  1.23s/it]100%|██████████| 7/7 [00:10<00:00,  1.20s/it]100%|██████████| 7/7 [00:10<00:00,  1.46s/it]
+Retrying invalid actions: 3
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:04,  2.20s/it] 67%|██████▋   | 2/3 [00:04<00:02,  2.55s/it]100%|██████████| 3/3 [00:06<00:00,  2.13s/it]100%|██████████| 3/3 [00:06<00:00,  2.21s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.71s/it]100%|██████████| 2/2 [00:06<00:00,  3.42s/it]100%|██████████| 2/2 [00:06<00:00,  3.47s/it]
+a:['recommend[Bastion]', 'recommend[Total War: Rome II]', 'recommend[Ultimate Chicken Horse]', 'recommend[Enlisted]', 'recommend[Hurtworld]', 'recommend[Hollow Knight]', 'recommend[PlanetSide 2]']
+0it [00:00, ?it/s]1it [00:00, 24.14it/s]
+0it [00:00, ?it/s]1it [00:00, 30.99it/s]
+0it [00:00, ?it/s]1it [00:00, 28.25it/s]
+0it [00:00, ?it/s]1it [00:00, 31.84it/s]
+0it [00:00, ?it/s]1it [00:00, 26.96it/s]
+0it [00:00, ?it/s]1it [00:00, 29.74it/s]
+0it [00:00, ?it/s]1it [00:00, 25.93it/s]
+userid:153564; item:Hurtworld; history_item:Hurtworld; distance:0.0, reward: 4
+  0%|          | 0/7 [00:00<?, ?it/s] 14%|█▍        | 1/7 [00:01<00:09,  1.65s/it] 29%|██▊       | 2/7 [00:02<00:04,  1.03it/s] 43%|████▎     | 3/7 [00:03<00:04,  1.18s/it] 57%|█████▋    | 4/7 [00:04<00:03,  1.11s/it] 86%|████████▌ | 6/7 [00:07<00:01,  1.21s/it]100%|██████████| 7/7 [00:07<00:00,  1.02it/s]100%|██████████| 7/7 [00:07<00:00,  1.08s/it]
+4
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:03<00:15,  3.06s/it] 50%|█████     | 3/6 [00:03<00:02,  1.11it/s] 67%|██████▋   | 4/6 [00:06<00:03,  1.54s/it] 83%|████████▎ | 5/6 [00:06<00:01,  1.11s/it]100%|██████████| 6/6 [00:15<00:00,  3.62s/it]100%|██████████| 6/6 [00:15<00:00,  2.55s/it]
+
+
+
+
+
+According to historical experience, When The user viewing history is [Factorio,Warframe,Zeno Clash 2,Master of Orion,Arma 3,Rust,Factorio,Borderlands 2,Blockstorm,PlanetSide 2], we encourage to recommend Kerbal Space Program items and not to recommend  items.
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:04<00:22,  4.59s/it] 33%|███▎      | 2/6 [00:05<00:08,  2.17s/it] 50%|█████     | 3/6 [00:07<00:06,  2.25s/it] 67%|██████▋   | 4/6 [00:07<00:03,  1.58s/it] 83%|████████▎ | 5/6 [00:12<00:02,  2.76s/it]100%|██████████| 6/6 [00:13<00:00,  2.02s/it]100%|██████████| 6/6 [00:13<00:00,  2.24s/it]
+Retrying invalid actions: 3
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:05,  2.62s/it] 67%|██████▋   | 2/3 [00:04<00:02,  2.04s/it]100%|██████████| 3/3 [00:05<00:00,  1.55s/it]100%|██████████| 3/3 [00:05<00:00,  1.74s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:08<00:00,  8.21s/it]100%|██████████| 1/1 [00:08<00:00,  8.21s/it]
+a:['recommend[Celeste]', 'recommend[The Sims 4]', 'recommend[Life is Strange]', 'recommend[Mount & Blade II: Bannerlord]', 'recommend[Braid]', 'recommend[PlanetSide 2]']
+0it [00:00, ?it/s]1it [00:00, 21.33it/s]
+0it [00:00, ?it/s]1it [00:00, 25.90it/s]
+0it [00:00, ?it/s]1it [00:00, 24.89it/s]
+0it [00:00, ?it/s]1it [00:00, 27.67it/s]
+0it [00:00, ?it/s]1it [00:00, 25.09it/s]
+0it [00:00, ?it/s]1it [00:00, 24.68it/s]
+userid:88719; item:Serena; history_item:Bastion; distance:1179.1729736328125, reward: 1
+userid:16271; item:PlanetSide 2; history_item:PlanetSide 2; distance:0.0, reward: 5
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:02<00:10,  2.09s/it] 33%|███▎      | 2/6 [00:02<00:03,  1.05it/s] 50%|█████     | 3/6 [00:02<00:02,  1.26it/s] 67%|██████▋   | 4/6 [00:03<00:01,  1.62it/s] 83%|████████▎ | 5/6 [00:03<00:00,  1.53it/s]100%|██████████| 6/6 [00:04<00:00,  1.99it/s]100%|██████████| 6/6 [00:04<00:00,  1.45it/s]
+5
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:06<00:19,  6.46s/it] 50%|█████     | 2/4 [00:07<00:06,  3.43s/it] 75%|███████▌  | 3/4 [00:11<00:03,  3.74s/it]100%|██████████| 4/4 [00:12<00:00,  2.38s/it]100%|██████████| 4/4 [00:12<00:00,  3.04s/it]
+
+
+
+
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:03<00:09,  3.14s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.38s/it]100%|██████████| 4/4 [00:15<00:00,  4.57s/it]100%|██████████| 4/4 [00:15<00:00,  3.81s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:06<00:00,  6.16s/it]100%|██████████| 1/1 [00:06<00:00,  6.16s/it]
+a:['recommend[Civilization VI]', 'recommend[Overcooked]', 'recommend[Ground Branch]', 'recommend[Stardew Valley]']
+0it [00:00, ?it/s]1it [00:00, 22.65it/s]
+0it [00:00, ?it/s]1it [00:00, 27.67it/s]
+0it [00:00, ?it/s]1it [00:00, 23.98it/s]
+0it [00:00, ?it/s]1it [00:00, 26.60it/s]
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:01<00:05,  1.99s/it] 75%|███████▌  | 3/4 [00:02<00:00,  1.75it/s]100%|██████████| 4/4 [00:02<00:00,  2.33it/s]100%|██████████| 4/4 [00:02<00:00,  1.74it/s]
+6
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:06<00:19,  6.36s/it] 50%|█████     | 2/4 [00:08<00:07,  3.72s/it]100%|██████████| 4/4 [00:08<00:00,  1.45s/it]100%|██████████| 4/4 [00:08<00:00,  2.11s/it]
+
+
+
+
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:03<00:10,  3.66s/it] 50%|█████     | 2/4 [00:04<00:04,  2.12s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.24s/it]100%|██████████| 4/4 [00:11<00:00,  3.47s/it]100%|██████████| 4/4 [00:11<00:00,  2.94s/it]
+a:['recommend[Stellaris]', 'recommend[Rocket League]', 'recommend[Rising Storm 2: Vietnam]', 'recommend[The Binding of Isaac: Rebirth]']
+0it [00:00, ?it/s]1it [00:00, 23.88it/s]
+0it [00:00, ?it/s]1it [00:00, 28.11it/s]
+0it [00:00, ?it/s]1it [00:00, 27.32it/s]
+0it [00:00, ?it/s]1it [00:00, 20.04it/s]
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:08,  2.79s/it] 75%|███████▌  | 3/4 [00:06<00:01,  1.97s/it]100%|██████████| 4/4 [00:07<00:00,  1.69s/it]100%|██████████| 4/4 [00:07<00:00,  1.83s/it]
+7
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:05<00:17,  5.67s/it] 50%|█████     | 2/4 [00:06<00:05,  2.73s/it] 75%|███████▌  | 3/4 [00:07<00:01,  1.79s/it]100%|██████████| 4/4 [00:09<00:00,  2.14s/it]100%|██████████| 4/4 [00:09<00:00,  2.42s/it]
+
+
+
+
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:08,  2.80s/it] 50%|█████     | 2/4 [00:03<00:03,  1.61s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.11s/it]100%|██████████| 4/4 [00:04<00:00,  1.32it/s]100%|██████████| 4/4 [00:04<00:00,  1.08s/it]
+a:['recommend[Age of Empires IV]', 'recommend[Gang Beasts]', 'recommend[Insurgency: Sandstorm]', 'recommend[Rivals of Aether]']
+0it [00:00, ?it/s]1it [00:00, 24.38it/s]
+0it [00:00, ?it/s]1it [00:00, 20.74it/s]
+0it [00:00, ?it/s]1it [00:00, 27.19it/s]
+0it [00:00, ?it/s]1it [00:00, 20.30it/s]
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:01<00:05,  1.91s/it] 50%|█████     | 2/4 [00:02<00:01,  1.12it/s]100%|██████████| 4/4 [00:02<00:00,  2.36it/s]100%|██████████| 4/4 [00:02<00:00,  1.68it/s]
+8
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:03<00:11,  3.94s/it] 50%|█████     | 2/4 [00:04<00:03,  1.72s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.04s/it]100%|██████████| 4/4 [00:05<00:00,  1.07s/it]100%|██████████| 4/4 [00:05<00:00,  1.36s/it]
+
+According to historical experience, When The user viewing history is [Brawlhalla,Tales from the Borderlands,Borderlands 2,Borderlands 2,Dreamfall Chapters,Ultimate Chicken Horse,Gone Home,I am Bread,Move or Die,Gang Beasts], we encourage to recommend Warface items and not to recommend  items.
+
+According to historical experience, When The user viewing history is [Crawl,Grim Fandango Remastered,Samorost 3,The Witness,Dungeon of the Endless™,Elliot Quest,Braid,AdVenture Capitalist,The Binding of Isaac: Rebirth,Rivals of Aether], we encourage to recommend Dungeon of the Endless™ items and not to recommend Tokyo Hosto items.
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:02<00:06,  2.20s/it] 50%|█████     | 2/4 [00:02<00:02,  1.36s/it] 75%|███████▌  | 3/4 [00:03<00:00,  1.14it/s]100%|██████████| 4/4 [00:06<00:00,  1.76s/it]100%|██████████| 4/4 [00:06<00:00,  1.60s/it]
+Retrying invalid actions: 3
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:06,  3.15s/it] 67%|██████▋   | 2/3 [00:06<00:03,  3.09s/it]100%|██████████| 3/3 [00:09<00:00,  3.28s/it]100%|██████████| 3/3 [00:09<00:00,  3.24s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.96s/it]100%|██████████| 1/1 [00:03<00:00,  3.96s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.36s/it]100%|██████████| 1/1 [00:02<00:00,  2.36s/it]
+a:['recommend[Total War: Attila]', 'recommend[Warface]', 'recommend[Hell Let Loose]', 'recommend[Celeste]']
+0it [00:00, ?it/s]1it [00:00, 15.62it/s]
+0it [00:00, ?it/s]1it [00:00, 26.15it/s]
+0it [00:00, ?it/s]1it [00:00, 27.27it/s]
+0it [00:00, ?it/s]1it [00:00, 26.42it/s]
+userid:188303; item:Serena; history_item:Rivals of Aether; distance:1140.1214599609375, reward: 1
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:01<00:05,  1.88s/it]100%|██████████| 4/4 [00:02<00:00,  2.53it/s]100%|██████████| 4/4 [00:02<00:00,  1.97it/s]
+9
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:07,  3.98s/it] 67%|██████▋   | 2/3 [00:05<00:02,  2.27s/it]100%|██████████| 3/3 [00:05<00:00,  1.40s/it]100%|██████████| 3/3 [00:05<00:00,  1.81s/it]
+
+According to historical experience, When The user viewing history is [Tales from the Borderlands,Borderlands 2,Borderlands 2,Dreamfall Chapters,Ultimate Chicken Horse,Gone Home,I am Bread,Move or Die,Gang Beasts,Warface], we encourage to recommend Warface items and not to recommend  items.
+
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:04<00:08,  4.20s/it] 67%|██████▋   | 2/3 [00:06<00:03,  3.18s/it]100%|██████████| 3/3 [00:14<00:00,  5.15s/it]100%|██████████| 3/3 [00:14<00:00,  4.72s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.76s/it]100%|██████████| 1/1 [00:05<00:00,  5.76s/it]
+a:['recommend[Cities: Skylines]', 'recommend[Left 4 Dead 2]', 'recommend[Rainbow Six Siege]']
+0it [00:00, ?it/s]1it [00:00, 23.62it/s]
+0it [00:00, ?it/s]1it [00:00, 26.56it/s]
+0it [00:00, ?it/s]1it [00:00, 26.09it/s]
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:01<00:03,  1.84s/it] 67%|██████▋   | 2/3 [00:02<00:01,  1.39s/it]100%|██████████| 3/3 [00:04<00:00,  1.64s/it]100%|██████████| 3/3 [00:04<00:00,  1.62s/it]
+10
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:05,  2.68s/it] 67%|██████▋   | 2/3 [00:03<00:01,  1.87s/it]100%|██████████| 3/3 [00:07<00:00,  2.66s/it]100%|██████████| 3/3 [00:07<00:00,  2.53s/it]
+According to historical experience, When The user viewing history is [Stronghold HD,Uebergame,Company of Heroes 2,Napoleon: Total War™,The Sims™ 3,Pride of Nations,Star Ruler,Age of Empires II HD,Majesty 2,Cities in Motion 2], we encourage to recommend Warframe items and not to recommend  items.
+
+According to historical experience, When The user viewing history is [This War of Mine,Arma 3,Squad,Bret Airborne,Mount &amp; Blade: Warband,Marauder,Call of Duty®: Ghosts,Tribes: Ascend,Front Wars,Warface], we encourage to recommend Dungeon Defenders Eternity items and not to recommend  items.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:06,  3.43s/it] 67%|██████▋   | 2/3 [00:03<00:01,  1.53s/it]100%|██████████| 3/3 [00:07<00:00,  2.68s/it]100%|██████████| 3/3 [00:07<00:00,  2.56s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.88s/it]100%|██████████| 1/1 [00:03<00:00,  3.88s/it]
+a:['recommend[Warframe]', 'recommend[The Walking Dead]', 'recommend[Dungeon Defenders Eternity]']
+0it [00:00, ?it/s]1it [00:00, 24.90it/s]
+0it [00:00, ?it/s]1it [00:00, 26.33it/s]
+0it [00:00, ?it/s]1it [00:00, 26.96it/s]
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:01<00:03,  1.61s/it] 67%|██████▋   | 2/3 [00:03<00:01,  1.68s/it]100%|██████████| 3/3 [00:04<00:00,  1.28s/it]100%|██████████| 3/3 [00:04<00:00,  1.38s/it]
+11
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:06,  3.36s/it] 67%|██████▋   | 2/3 [00:05<00:02,  2.85s/it]100%|██████████| 3/3 [00:08<00:00,  2.68s/it]100%|██████████| 3/3 [00:08<00:00,  2.78s/it]
+According to historical experience, When The user viewing history is [Uebergame,Company of Heroes 2,Napoleon: Total War™,The Sims™ 3,Pride of Nations,Star Ruler,Age of Empires II HD,Majesty 2,Cities in Motion 2,Warframe], we encourage to recommend Counter-Strike Nexon: Zombies items and not to recommend  items.
+
+According to historical experience, When The user viewing history is [Arma 3,Squad,Bret Airborne,Mount &amp; Blade: Warband,Marauder,Call of Duty®: Ghosts,Tribes: Ascend,Front Wars,Warface,Dungeon Defenders Eternity], we encourage to recommend Cat Goes Fishing items and not to recommend  items.
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:05<00:10,  5.13s/it]100%|██████████| 3/3 [00:12<00:00,  3.97s/it]100%|██████████| 3/3 [00:12<00:00,  4.09s/it]
+a:['recommend[Total War: Shogun 2]', 'recommend[The Walking Dead]', 'recommend[Cat Goes Fishing]']
+0it [00:00, ?it/s]1it [00:00, 25.78it/s]
+0it [00:00, ?it/s]1it [00:00, 26.67it/s]
+0it [00:00, ?it/s]1it [00:00, 30.00it/s]
+userid:184746; item:The Walking Dead; history_item:The Walking Dead; distance:0.0, reward: 3
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:04,  2.08s/it]100%|██████████| 3/3 [00:06<00:00,  2.36s/it]100%|██████████| 3/3 [00:06<00:00,  2.33s/it]
+12
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.93s/it]100%|██████████| 2/2 [00:05<00:00,  2.33s/it]100%|██████████| 2/2 [00:05<00:00,  2.57s/it]
+According to historical experience, When The user viewing history is [Company of Heroes 2,Napoleon: Total War™,The Sims™ 3,Pride of Nations,Star Ruler,Age of Empires II HD,Majesty 2,Cities in Motion 2,Warframe,Medieval II: Total War™], we encourage to recommend Command &amp; Conquer 3: Kane's Wrath items and not to recommend  items.
+According to historical experience, When The user viewing history is [Squad,Bret Airborne,Mount &amp; Blade: Warband,Marauder,Call of Duty®: Ghosts,Tribes: Ascend,Front Wars,Warface,Dungeon Defenders Eternity,Cat Goes Fishing], we encourage to recommend AdVenture Capitalist items and not to recommend  items.
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.28s/it]100%|██████████| 2/2 [00:03<00:00,  1.64s/it]100%|██████████| 2/2 [00:03<00:00,  1.74s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.72s/it]100%|██████████| 2/2 [00:03<00:00,  1.54s/it]100%|██████████| 2/2 [00:03<00:00,  1.72s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:05<00:05,  5.09s/it]100%|██████████| 2/2 [00:05<00:00,  2.34s/it]100%|██████████| 2/2 [00:05<00:00,  2.76s/it]
+a:['recommend[Total War: Shogun 2]', 'recommend[AdVenture Capitalist]']
+0it [00:00, ?it/s]1it [00:00, 27.14it/s]
+0it [00:00, ?it/s]1it [00:00, 30.80it/s]
+userid:146841; item:Medieval II: Total War™; history_item:Medieval II: Total War™; distance:0.0, reward: 5
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.14s/it]100%|██████████| 2/2 [00:03<00:00,  1.41s/it]100%|██████████| 2/2 [00:03<00:00,  1.52s/it]
+13
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:06<00:00,  6.55s/it]100%|██████████| 1/1 [00:06<00:00,  6.55s/it]
+According to historical experience, When The user viewing history is [Bret Airborne,Mount &amp; Blade: Warband,Marauder,Call of Duty®: Ghosts,Tribes: Ascend,Front Wars,Warface,Dungeon Defenders Eternity,Cat Goes Fishing,AdVenture Capitalist], we encourage to recommend Killing Floor 2 items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.07s/it]100%|██████████| 1/1 [00:03<00:00,  3.07s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.68s/it]100%|██████████| 1/1 [00:02<00:00,  2.68s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.60s/it]100%|██████████| 1/1 [00:04<00:00,  4.60s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.94s/it]100%|██████████| 1/1 [00:02<00:00,  2.94s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.86s/it]100%|██████████| 1/1 [00:03<00:00,  3.86s/it]
+Retrying invalid actions: 1
+Invalid actions after retries: 1
+a:['']
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.41s/it]100%|██████████| 1/1 [00:04<00:00,  4.41s/it]
+14
+Reflecting...
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:26,  3.00s/it] 20%|██        | 2/10 [00:03<00:10,  1.35s/it] 30%|███       | 3/10 [00:03<00:06,  1.04it/s] 40%|████      | 4/10 [00:04<00:06,  1.06s/it] 50%|█████     | 5/10 [00:05<00:03,  1.38it/s] 60%|██████    | 6/10 [00:05<00:02,  1.87it/s] 70%|███████   | 7/10 [00:05<00:01,  2.15it/s] 80%|████████  | 8/10 [00:06<00:01,  1.54it/s] 90%|█████████ | 9/10 [00:07<00:00,  1.26it/s]100%|██████████| 10/10 [00:08<00:00,  1.29it/s]100%|██████████| 10/10 [00:08<00:00,  1.19it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.51s/it]100%|██████████| 2/2 [00:04<00:00,  2.25s/it]100%|██████████| 2/2 [00:04<00:00,  2.44s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.10s/it]100%|██████████| 1/1 [00:04<00:00,  4.11s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.85s/it]100%|██████████| 1/1 [00:02<00:00,  2.85s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.10s/it]100%|██████████| 1/1 [00:07<00:00,  7.10s/it]
+Running Hybrid Retrieval Experiment...
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:6: LangChainDeprecationWarning: Importing chat models from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.chat_models import ChatOpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.chat_models import ChatOpenAI
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:6: LangChainDeprecationWarning: Importing chat models from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
+
+`from langchain_community.chat_models import ChatOpenAI`.
+
+To install langchain-community run `pip install -U langchain-community`.
+  from langchain.chat_models import ChatOpenAI
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:14: LangChainDeprecationWarning: Importing Docstore from langchain.docstore is deprecated. Please replace deprecated imports:
+
+>> from langchain.docstore import Docstore
+
+with new imports of:
+
+>> from langchain_community.docstore.base import Docstore
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.docstore.base import Docstore
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:16: LangChainDeprecationWarning: Importing FAISS from langchain.vectorstores is deprecated. Please replace deprecated imports:
+
+>> from langchain.vectorstores import FAISS
+
+with new imports of:
+
+>> from langchain_community.vectorstores import FAISS
+You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
+  from langchain.vectorstores import FAISS
+steam_test_0_10_deepseek-v4-flash_0.5_retrieval_hybrid_s1_d1_2026-06-06-13-11-35
+./env/steam/steam_test.npy
+reward_mat shape:(190365, 6012)
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.33s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.73s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.97s/it]
+/data/songbo/work/recommand_sys/BiLLP-Recsys/Agents/agent_a2c.py:730: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFaceEmbeddings``.
+  embeddings = HuggingFaceEmbeddings(model_name="./model/sentence-transformers/all-MiniLM-L6-v2")
+Loaded 50 reflections from output/reflections/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.txt
+Loaded 320 actor memory entries from output/memory/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.json
+Loaded 318 critic memory entries from output/critic_memory/steam_test_0_50_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-09-26-12.json
+temp_idxs:[29434, 35297, 64619, 102524, 92137, 65733, 51558, 71342, 106081, 5917]
+Reflecting...
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: The agent recommended Insurgency: Sandstorm, which was substituted with Tribes: Ascend, a game already recommended, causing user boredom and stop. Next plan: Track all recommended items including substitutes, and never recommend an item that has already been presented to the user.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: Recommending an item already in the user's history multiple times, causing user fatigue and negative response. Next plan: Avoid recommending any item already in the user's viewing history; diversify recommendations by selecting new titles within the same genre or theme.
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: recommended a mismatched game (Out of Reach) that didn't align with user's FPS preference Next plan: recommend a popular FPS game similar to user's history and ensure it is available in the catalog
+You have attempted to recommend items to users before. The following reflection(s) give some insights on how to better interact with users. Use them to improve your strategy of recommending.
+Reflections:
+- Failure reason: The recommendations deviated from the user's demonstrated preference for action RPGs, leading to disinterest and a stop after a mismatched substitution. Next plan: Prioritize recommending games from genres with highest past rewards (action RPG) and avoid items likely to be substituted with mismatched titles.
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:22,  2.53s/it] 20%|██        | 2/10 [00:02<00:10,  1.27s/it] 30%|███       | 3/10 [00:03<00:06,  1.05it/s] 40%|████      | 4/10 [00:03<00:03,  1.55it/s] 60%|██████    | 6/10 [00:04<00:01,  2.37it/s] 70%|███████   | 7/10 [00:04<00:01,  2.17it/s] 80%|████████  | 8/10 [00:05<00:01,  1.73it/s] 90%|█████████ | 9/10 [00:05<00:00,  2.12it/s]100%|██████████| 10/10 [00:13<00:00,  2.47s/it]100%|██████████| 10/10 [00:13<00:00,  1.31s/it]
+According to historical experience, When The user viewing history is [Blockland,Shovel Knight: Treasure Trove,PlanetSide 2,Eldritch,Shantae: Risky's Revenge - Director's Cut], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [LIMBO,Batman™: Arkham Origins,FEIST,Assassin's Creed® Unity], we encourage to recommend Elliot Quest items and not to recommend  items.
+According to historical experience, When The user viewing history is [Age of Empires II HD,Age of Empires II HD,Age of Empires II HD,Galactic Civilizations III,Galactic Civilizations III,Medieval II: Total War™,Stronghold HD], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [Golf With Your Friends,Golf With Your Friends,Brawlhalla,Tales from the Borderlands,Borderlands 2], we encourage to recommend Out of Reach items and not to recommend  items.
+According to historical experience, When The user viewing history is [Rust,Rust], we encourage to recommend DayZ items and not to recommend  items.
+According to historical experience, When The user viewing history is [Counter-Strike: Condition Zero,Mount &amp; Blade: Warband,Red Orchestra 2: Heroes of Stalingrad with Rising Storm,This War of Mine], we encourage to recommend Out of Reach,null items and not to recommend  items.
+According to historical experience, When The user viewing history is [Squad,Stonehearth], we encourage to recommend Planetbase items and not to recommend  items.
+According to historical experience, When The user viewing history is [Wayward,Rust,Rust], we encourage to recommend Hurtworld items and not to recommend  items.
+According to historical experience, When The user viewing history is [Undertale,Lethal League,Crawl,Crawl,Grim Fandango Remastered,Samorost 3], we encourage to recommend The Witness items and not to recommend  items.
+According to historical experience, When The user viewing history is [Heroes &amp; Generals,100% Orange Juice,100% Orange Juice,Factorio,Warframe,Zeno Clash 2,Master of Orion,Arma 3,Rust,Factorio], we encourage to recommend Out of Reach items and not to recommend  items.
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:03<00:29,  3.24s/it] 30%|███       | 3/10 [00:04<00:08,  1.14s/it] 40%|████      | 4/10 [00:04<00:04,  1.21it/s] 50%|█████     | 5/10 [00:06<00:06,  1.33s/it] 60%|██████    | 6/10 [00:07<00:05,  1.33s/it] 70%|███████   | 7/10 [00:08<00:02,  1.04it/s] 80%|████████  | 8/10 [00:08<00:01,  1.26it/s] 90%|█████████ | 9/10 [00:08<00:00,  1.52it/s]100%|██████████| 10/10 [00:12<00:00,  1.42s/it]100%|██████████| 10/10 [00:12<00:00,  1.20s/it]
+Retrying invalid actions: 6
+  0%|          | 0/6 [00:00<?, ?it/s] 17%|█▋        | 1/6 [00:02<00:11,  2.35s/it] 33%|███▎      | 2/6 [00:04<00:08,  2.07s/it] 50%|█████     | 3/6 [00:04<00:04,  1.41s/it] 67%|██████▋   | 4/6 [00:05<00:01,  1.07it/s] 83%|████████▎ | 5/6 [00:09<00:02,  2.13s/it]100%|██████████| 6/6 [00:09<00:00,  1.47s/it]100%|██████████| 6/6 [00:09<00:00,  1.58s/it]
+Retrying invalid actions: 4
+  0%|          | 0/4 [00:00<?, ?it/s] 25%|██▌       | 1/4 [00:03<00:09,  3.19s/it] 50%|█████     | 2/4 [00:03<00:02,  1.47s/it] 75%|███████▌  | 3/4 [00:04<00:01,  1.31s/it]100%|██████████| 4/4 [00:05<00:00,  1.24s/it]100%|██████████| 4/4 [00:05<00:00,  1.43s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.58s/it]100%|██████████| 2/2 [00:05<00:00,  2.81s/it]100%|██████████| 2/2 [00:05<00:00,  2.78s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.59s/it]100%|██████████| 2/2 [00:09<00:00,  4.89s/it]100%|██████████| 2/2 [00:09<00:00,  4.85s/it]
+Retrying invalid actions: 1
+Invalid actions after retries: 1
+a:['recommend[Hollow Knight]', 'recommend[Elliot Quest]', 'recommend[Age of Empires III]', '', 'recommend[DayZ]', 'recommend[Squad]', 'recommend[Planetbase]', 'recommend[Hurtworld]', 'recommend[The Witness]', 'recommend[Destiny 2]']
+0it [00:00, ?it/s]1it [00:00,  8.58it/s]1it [00:00,  8.57it/s]
+0it [00:00, ?it/s]1it [00:00, 27.90it/s]
+0it [00:00, ?it/s]1it [00:00, 26.31it/s]
+0it [00:00, ?it/s]1it [00:00, 29.81it/s]
+0it [00:00, ?it/s]1it [00:00, 26.51it/s]
+0it [00:00, ?it/s]1it [00:00, 29.55it/s]
+0it [00:00, ?it/s]1it [00:00, 26.39it/s]
+0it [00:00, ?it/s]1it [00:00, 30.47it/s]
+0it [00:00, ?it/s]1it [00:00, 26.35it/s]
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:02<00:18,  2.10s/it] 30%|███       | 3/10 [00:02<00:05,  1.31it/s] 40%|████      | 4/10 [00:02<00:03,  1.76it/s] 60%|██████    | 6/10 [00:03<00:01,  2.84it/s] 70%|███████   | 7/10 [00:03<00:01,  2.19it/s] 90%|█████████ | 9/10 [00:05<00:00,  1.60it/s]100%|██████████| 10/10 [00:06<00:00,  1.47it/s]100%|██████████| 10/10 [00:06<00:00,  1.55it/s]
+2
+  0%|          | 0/9 [00:00<?, ?it/s] 11%|█         | 1/9 [00:03<00:24,  3.03s/it] 22%|██▏       | 2/9 [00:03<00:11,  1.58s/it] 33%|███▎      | 3/9 [00:03<00:06,  1.03s/it] 44%|████▍     | 4/9 [00:04<00:04,  1.07it/s] 67%|██████▋   | 6/9 [00:06<00:02,  1.24it/s] 78%|███████▊  | 7/9 [00:06<00:01,  1.55it/s] 89%|████████▉ | 8/9 [00:07<00:00,  1.21it/s]100%|██████████| 9/9 [00:08<00:00,  1.19it/s]100%|██████████| 9/9 [00:08<00:00,  1.06it/s]
+
+According to historical experience, When The user viewing history is [LIMBO,Batman™: Arkham Origins,FEIST,Assassin's Creed® Unity,Elliot Quest], we encourage to recommend  items and not to recommend Elliot Quest items.
+According to historical experience, When The user viewing history is [Age of Empires II HD,Age of Empires II HD,Age of Empires II HD,Galactic Civilizations III,Galactic Civilizations III,Medieval II: Total War™,Stronghold HD,Age of Empires II HD], we encourage to recommend Out of Reach,Age of Empires II HD items and not to recommend  items.
+According to historical experience, When The user viewing history is [Rust,Rust,DayZ], we encourage to recommend Out of Reach items and not to recommend  items.
+
+According to historical experience, When The user viewing history is [Squad,Stonehearth,Planetbase], we encourage to recommend  items and not to recommend Planetbase items.
+According to historical experience, When The user viewing history is [Wayward,Rust,Rust,Hurtworld], we encourage to recommend Major\Minor items and not to recommend  items.
+According to historical experience, When The user viewing history is [Undertale,Lethal League,Crawl,Crawl,Grim Fandango Remastered,Samorost 3,The Witness], we encourage to recommend  items and not to recommend Tokyo Hosto items.
+
+  0%|          | 0/9 [00:00<?, ?it/s] 11%|█         | 1/9 [00:01<00:13,  1.69s/it] 22%|██▏       | 2/9 [00:04<00:15,  2.23s/it] 33%|███▎      | 3/9 [00:05<00:10,  1.71s/it] 44%|████▍     | 4/9 [00:06<00:06,  1.30s/it] 56%|█████▌    | 5/9 [00:06<00:04,  1.11s/it] 67%|██████▋   | 6/9 [00:06<00:02,  1.29it/s] 78%|███████▊  | 7/9 [00:07<00:01,  1.44it/s] 89%|████████▉ | 8/9 [00:08<00:00,  1.11it/s]100%|██████████| 9/9 [00:10<00:00,  1.20s/it]100%|██████████| 9/9 [00:10<00:00,  1.19s/it]
+Retrying invalid actions: 5
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:04<00:17,  4.47s/it] 40%|████      | 2/5 [00:04<00:05,  1.95s/it] 60%|██████    | 3/5 [00:04<00:02,  1.21s/it] 80%|████████  | 4/5 [00:05<00:00,  1.09it/s]100%|██████████| 5/5 [00:07<00:00,  1.35s/it]100%|██████████| 5/5 [00:07<00:00,  1.52s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.39s/it]100%|██████████| 2/2 [00:08<00:00,  4.40s/it]100%|██████████| 2/2 [00:08<00:00,  4.39s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.91s/it]100%|██████████| 1/1 [00:02<00:00,  2.91s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.88s/it]100%|██████████| 1/1 [00:03<00:00,  3.88s/it]
+Retrying invalid actions: 1
+Invalid actions after retries: 1
+a:['', 'recommend[Hollow Knight]', 'recommend[Out of Reach]', 'recommend[DayZ]', 'recommend[Hell Let Loose]', 'recommend[RimWorld]', 'recommend[Hurtworld]', 'recommend[Braid]', 'recommend[Some Game]']
+0it [00:00, ?it/s]1it [00:00, 23.02it/s]
+0it [00:00, ?it/s]1it [00:00, 20.30it/s]
+0it [00:00, ?it/s]1it [00:00, 26.76it/s]
+0it [00:00, ?it/s]1it [00:00, 25.93it/s]
+0it [00:00, ?it/s]1it [00:00, 27.08it/s]
+0it [00:00, ?it/s]1it [00:00, 26.60it/s]
+0it [00:00, ?it/s]1it [00:00, 31.40it/s]
+0it [00:00, ?it/s]1it [00:00, 30.58it/s]
+userid:110603; item:Elliot Quest; history_item:Elliot Quest; distance:0.0, reward: 4
+userid:174359; item:DayZ; history_item:DayZ; distance:0.0, reward: 5
+userid:133780; item:Planetbase; history_item:Planetbase; distance:0.0, reward: 2
+userid:153564; item:Hurtworld; history_item:Hurtworld; distance:0.0, reward: 4
+userid:16271; item:Uebergame; history_item:Dungeon Defenders Eternity; distance:1034.5684814453125, reward: 1
+  0%|          | 0/9 [00:00<?, ?it/s] 11%|█         | 1/9 [00:02<00:18,  2.27s/it] 22%|██▏       | 2/9 [00:02<00:07,  1.14s/it] 44%|████▍     | 4/9 [00:02<00:02,  2.02it/s] 67%|██████▋   | 6/9 [00:02<00:00,  3.45it/s] 89%|████████▉ | 8/9 [00:03<00:00,  3.35it/s]100%|██████████| 9/9 [00:06<00:00,  1.25it/s]100%|██████████| 9/9 [00:06<00:00,  1.47it/s]
+3
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:03<00:07,  3.54s/it] 67%|██████▋   | 2/3 [00:04<00:01,  1.79s/it]100%|██████████| 3/3 [00:06<00:00,  2.05s/it]100%|██████████| 3/3 [00:06<00:00,  2.16s/it]
+According to historical experience, When The user viewing history is [Age of Empires II HD,Age of Empires II HD,Age of Empires II HD,Galactic Civilizations III,Galactic Civilizations III,Medieval II: Total War™,Stronghold HD,Age of Empires II HD,Out of Reach], we encourage to recommend  items and not to recommend Out of Reach items.
+
+
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:06<00:13,  6.91s/it] 67%|██████▋   | 2/3 [00:07<00:03,  3.31s/it]100%|██████████| 3/3 [00:12<00:00,  3.84s/it]100%|██████████| 3/3 [00:12<00:00,  4.06s/it]
+Retrying invalid actions: 2
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.01s/it]100%|██████████| 2/2 [00:03<00:00,  1.51s/it]100%|██████████| 2/2 [00:03<00:00,  1.73s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.33s/it]100%|██████████| 1/1 [00:07<00:00,  7.34s/it]
+a:['recommend[Total War: Rome II]', 'recommend[Arma 3]', 'recommend[Fez]']
+0it [00:00, ?it/s]1it [00:00, 17.43it/s]
+0it [00:00, ?it/s]1it [00:00, 20.77it/s]
+0it [00:00, ?it/s]1it [00:00, 24.26it/s]
+userid:188303; item:Tokyo Hosto; history_item:Braid; distance:1074.5208740234375, reward: 1
+  0%|          | 0/3 [00:00<?, ?it/s] 33%|███▎      | 1/3 [00:02<00:04,  2.11s/it] 67%|██████▋   | 2/3 [00:02<00:01,  1.31s/it]100%|██████████| 3/3 [00:03<00:00,  1.09it/s]100%|██████████| 3/3 [00:03<00:00,  1.10s/it]
+4
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:05<00:05,  5.00s/it]100%|██████████| 2/2 [00:07<00:00,  3.73s/it]100%|██████████| 2/2 [00:07<00:00,  3.92s/it]
+
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.73s/it]100%|██████████| 2/2 [00:08<00:00,  4.81s/it]100%|██████████| 2/2 [00:08<00:00,  4.50s/it]
+a:['recommend[Civilization V]', 'recommend[Post Scriptum]']
+0it [00:00, ?it/s]1it [00:00, 26.25it/s]
+0it [00:00, ?it/s]1it [00:00, 23.18it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.48s/it]100%|██████████| 2/2 [00:05<00:00,  2.57s/it]100%|██████████| 2/2 [00:05<00:00,  2.71s/it]
+5
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:06<00:06,  6.17s/it]100%|██████████| 2/2 [00:20<00:00, 10.83s/it]100%|██████████| 2/2 [00:20<00:00, 10.13s/it]
+
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.33s/it]100%|██████████| 2/2 [00:04<00:00,  1.86s/it]100%|██████████| 2/2 [00:04<00:00,  2.24s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.80s/it]100%|██████████| 1/1 [00:02<00:00,  2.80s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.93s/it]100%|██████████| 1/1 [00:05<00:00,  5.93s/it]
+a:['recommend[Stronghold Crusader]', 'recommend[Day of Infamy]']
+0it [00:00, ?it/s]1it [00:00, 19.79it/s]
+0it [00:00, ?it/s]1it [00:00, 27.91it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:11<00:11, 11.17s/it]100%|██████████| 2/2 [00:14<00:00,  6.28s/it]100%|██████████| 2/2 [00:14<00:00,  7.02s/it]
+6
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.15s/it]100%|██████████| 2/2 [00:18<00:00,  9.95s/it]100%|██████████| 2/2 [00:18<00:00,  9.08s/it]
+
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:13<00:13, 13.22s/it]100%|██████████| 2/2 [00:14<00:00,  6.25s/it]100%|██████████| 2/2 [00:14<00:00,  7.29s/it]
+a:['recommend[World of Warcraft]', 'recommend[Rising Storm 2: Vietnam]']
+0it [00:00, ?it/s]1it [00:00, 23.38it/s]
+0it [00:00, ?it/s]1it [00:00, 22.89it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:01<00:01,  1.74s/it]100%|██████████| 2/2 [00:05<00:00,  3.02s/it]100%|██████████| 2/2 [00:05<00:00,  2.83s/it]
+7
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:07<00:07,  7.75s/it]100%|██████████| 2/2 [00:23<00:00, 12.35s/it]100%|██████████| 2/2 [00:23<00:00, 11.66s/it]
+
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.54s/it]100%|██████████| 2/2 [00:05<00:00,  2.61s/it]100%|██████████| 2/2 [00:05<00:00,  2.60s/it]
+a:['recommend[StarCraft II]', 'recommend[Escape from Tarkov]']
+0it [00:00, ?it/s]1it [00:00, 26.04it/s]
+0it [00:00, ?it/s]1it [00:00, 28.59it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.96s/it]100%|██████████| 2/2 [00:05<00:00,  2.98s/it]100%|██████████| 2/2 [00:05<00:00,  2.98s/it]
+8
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.63s/it]100%|██████████| 2/2 [00:05<00:00,  3.05s/it]100%|██████████| 2/2 [00:05<00:00,  2.99s/it]
+
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.63s/it]100%|██████████| 2/2 [00:03<00:00,  1.45s/it]100%|██████████| 2/2 [00:03<00:00,  1.63s/it]
+a:['recommend[Total War: Shogun 2]', 'recommend[Mount & Blade II: Bannerlord]']
+0it [00:00, ?it/s]1it [00:00, 21.93it/s]
+0it [00:00, ?it/s]1it [00:00, 22.87it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:01<00:01,  1.79s/it]100%|██████████| 2/2 [00:02<00:00,  1.35s/it]100%|██████████| 2/2 [00:02<00:00,  1.42s/it]
+9
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.66s/it]100%|██████████| 2/2 [00:06<00:00,  3.40s/it]100%|██████████| 2/2 [00:06<00:00,  3.29s/it]
+According to historical experience, When The user viewing history is [Medieval II: Total War™,Stronghold HD,Age of Empires II HD,Out of Reach,Napoleon: Total War™,Pride of Nations,Ultimate General: Gettysburg,Shakes and Fidget,Company of Heroes 2,Medieval II: Total War™], we encourage to recommend Out of Reach,Age of Empires II HD items and not to recommend  items.
+
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.73s/it]100%|██████████| 2/2 [00:04<00:00,  2.04s/it]100%|██████████| 2/2 [00:04<00:00,  2.29s/it]
+a:['recommend[Age of Empires II HD]', 'recommend[Company of Heroes 2]']
+0it [00:00, ?it/s]1it [00:00, 23.11it/s]
+0it [00:00, ?it/s]1it [00:00, 21.73it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.15s/it]100%|██████████| 2/2 [00:11<00:00,  6.55s/it]100%|██████████| 2/2 [00:11<00:00,  5.89s/it]
+10
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:03<00:03,  3.60s/it]100%|██████████| 2/2 [00:09<00:00,  4.99s/it]100%|██████████| 2/2 [00:09<00:00,  4.78s/it]
+
+According to historical experience, When The user viewing history is [This War of Mine,Squad,Front Wars,Arma 3,Rememoried,Red Orchestra: Ostfront 41-45,Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2], we encourage to recommend Out of Reach,null,Squad items and not to recommend  items.
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:04<00:04,  4.20s/it]100%|██████████| 2/2 [00:04<00:00,  2.00s/it]100%|██████████| 2/2 [00:04<00:00,  2.33s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.05s/it]100%|██████████| 1/1 [00:04<00:00,  4.05s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:09<00:00,  9.65s/it]100%|██████████| 1/1 [00:09<00:00,  9.65s/it]
+a:['recommend[Age of Empires IV]', 'recommend[Valiant Hearts: The Great War]']
+0it [00:00, ?it/s]1it [00:00, 22.17it/s]
+0it [00:00, ?it/s]1it [00:00, 26.60it/s]
+userid:146841; item:Age of Empires II HD; history_item:Age of Empires II HD; distance:0.0, reward: 5
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:02<00:02,  2.12s/it]100%|██████████| 2/2 [00:03<00:00,  1.46s/it]100%|██████████| 2/2 [00:03<00:00,  1.56s/it]
+11
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.61s/it]100%|██████████| 1/1 [00:05<00:00,  5.61s/it]
+According to historical experience, When The user viewing history is [Squad,Front Wars,Arma 3,Rememoried,Red Orchestra: Ostfront 41-45,Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™], we encourage to recommend Out of Reach,null,Squad items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.91s/it]100%|██████████| 1/1 [00:02<00:00,  2.91s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.90s/it]100%|██████████| 1/1 [00:07<00:00,  7.90s/it]
+a:['recommend[Battlefield 1]']
+0it [00:00, ?it/s]1it [00:00, 22.55it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.71s/it]100%|██████████| 1/1 [00:01<00:00,  1.71s/it]
+12
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.13s/it]100%|██████████| 1/1 [00:05<00:00,  5.13s/it]
+According to historical experience, When The user viewing history is [Front Wars,Arma 3,Rememoried,Red Orchestra: Ostfront 41-45,Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™,Arma 3], we encourage to recommend Out of Reach,null,Squad items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:06<00:00,  6.01s/it]100%|██████████| 1/1 [00:06<00:00,  6.01s/it]
+a:['recommend[Chivalry: Medieval Warfare]']
+0it [00:00, ?it/s]1it [00:00, 24.52it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.83s/it]100%|██████████| 1/1 [00:01<00:00,  1.83s/it]
+13
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.18s/it]100%|██████████| 1/1 [00:05<00:00,  5.18s/it]
+According to historical experience, When The user viewing history is [Arma 3,Rememoried,Red Orchestra: Ostfront 41-45,Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™,Arma 3,Chivalry: Medieval Warfare], we encourage to recommend Out of Reach,null,Squad items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:10<00:00, 10.37s/it]100%|██████████| 1/1 [00:10<00:00, 10.37s/it]
+a:['recommend[XCOM 2]']
+0it [00:00, ?it/s]1it [00:00, 26.36it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.80s/it]100%|██████████| 1/1 [00:01<00:00,  1.80s/it]
+14
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:04<00:00,  4.69s/it]100%|██████████| 1/1 [00:04<00:00,  4.69s/it]
+According to historical experience, When The user viewing history is [Rememoried,Red Orchestra: Ostfront 41-45,Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™,Arma 3,Chivalry: Medieval Warfare,XCOM® 2], we encourage to recommend Out of Reach,null,Squad items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:03<00:00,  3.01s/it]100%|██████████| 1/1 [00:03<00:00,  3.01s/it]
+Retrying invalid actions: 1
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:10<00:00, 10.68s/it]100%|██████████| 1/1 [00:10<00:00, 10.68s/it]
+a:['recommend[Fallout 4]']
+0it [00:00, ?it/s]1it [00:00, 23.72it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.06s/it]100%|██████████| 1/1 [00:05<00:00,  5.06s/it]
+15
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.86s/it]100%|██████████| 1/1 [00:05<00:00,  5.86s/it]
+According to historical experience, When The user viewing history is [Red Orchestra: Ostfront 41-45,Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™,Arma 3,Chivalry: Medieval Warfare,XCOM® 2,Fallout 4], we encourage to recommend Out of Reach,null,Squad items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.20s/it]100%|██████████| 1/1 [00:07<00:00,  7.20s/it]
+a:['recommend[Frostpunk]']
+0it [00:00, ?it/s]1it [00:00, 25.95it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.78s/it]100%|██████████| 1/1 [00:01<00:00,  1.78s/it]
+16
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.79s/it]100%|██████████| 1/1 [00:05<00:00,  5.79s/it]
+According to historical experience, When The user viewing history is [Call of Duty®: Ghosts,Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™,Arma 3,Chivalry: Medieval Warfare,XCOM® 2,Fallout 4,Tropico 5], we encourage to recommend  items and not to recommend Move or Die items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:05<00:00,  5.85s/it]100%|██████████| 1/1 [00:05<00:00,  5.85s/it]
+a:['recommend[Hearts of Iron IV]']
+0it [00:00, ?it/s]1it [00:00, 23.97it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:01<00:00,  1.72s/it]100%|██████████| 1/1 [00:01<00:00,  1.72s/it]
+17
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:06<00:00,  6.80s/it]100%|██████████| 1/1 [00:06<00:00,  6.80s/it]
+According to historical experience, When The user viewing history is [Warface,Mount &amp; Blade: Warband,Company of Heroes 2,Valiant Hearts: The Great War™ / Soldats Inconnus : Mémoires de la Grande Guerre™,Arma 3,Chivalry: Medieval Warfare,XCOM® 2,Fallout 4,Tropico 5,Hearts of Iron III], we encourage to recommend Command &amp; Conquer 3: Kane's Wrath items and not to recommend  items.
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:07<00:00,  7.06s/it]100%|██████████| 1/1 [00:07<00:00,  7.06s/it]
+a:['recommend[Hearts of Iron IV]']
+0it [00:00, ?it/s]1it [00:00, 26.37it/s]
+userid:147955; item:Hearts of Iron III; history_item:Hearts of Iron III; distance:0.0, reward: 5
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:02<00:00,  2.29s/it]100%|██████████| 1/1 [00:02<00:00,  2.29s/it]
+18
+Reflecting...
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:03<00:27,  3.06s/it] 20%|██        | 2/10 [00:03<00:14,  1.77s/it] 30%|███       | 3/10 [00:04<00:07,  1.07s/it] 40%|████      | 4/10 [00:04<00:04,  1.26it/s] 50%|█████     | 5/10 [00:04<00:03,  1.50it/s] 60%|██████    | 6/10 [00:05<00:02,  1.54it/s] 80%|████████  | 8/10 [00:06<00:01,  1.95it/s] 90%|█████████ | 9/10 [00:06<00:00,  2.33it/s]100%|██████████| 10/10 [00:06<00:00,  2.91it/s]100%|██████████| 10/10 [00:06<00:00,  1.50it/s]
+  0%|          | 0/2 [00:00<?, ?it/s] 50%|█████     | 1/2 [00:16<00:16, 16.10s/it]100%|██████████| 2/2 [00:22<00:00, 10.64s/it]100%|██████████| 2/2 [00:22<00:00, 11.46s/it]

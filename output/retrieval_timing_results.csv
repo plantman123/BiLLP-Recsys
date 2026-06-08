@@ -1,0 +1,4 @@
+run,n,Len,R_each,R_traj,reach_rate,stop_rate,invalid_rate,action_len,raw_rtraj,grounding_replace_rate,rerank_per_episode
+steam_test_0_10_deepseek-v4-flash_0.5_retrieval_dynamic_k2_2026-06-06-13-03-42,10,5.1,4.568627450980392,23.3,0.0,0.9,0.1,6.0,-876.7,0.5666666666666667,0.0
+steam_test_0_10_deepseek-v4-flash_0.5_retrieval_episode_2026-06-06-12-54-23,10,4.8,4.75,22.8,0.0,0.9,0.1,5.7,-877.2,0.6491228070175439,0.0
+steam_test_0_10_deepseek-v4-flash_0.5_retrieval_hybrid_s1_d1_2026-06-06-13-11-35,10,3.3,4.7272727272727275,15.6,0.0,0.8,0.2,4.1,-784.4,0.6341463414634146,0.0
