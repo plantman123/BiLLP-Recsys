@@ -39,27 +39,26 @@ COMMON_ARGS=(
 )
 
 
-echo "Running Baseline Experiment..."
-CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
-  "${COMMON_ARGS[@]}" \
-  --run_name grounding_original \
-  --reflection_retrieval_mode original \
-  --reflection_memory_policy full \
-  --reflection_memory_size 0
+# echo "Running Baseline Experiment..."
+# CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
+#   "${COMMON_ARGS[@]}" \
+#   --run_name grounding_original \
+#   --reflection_retrieval_mode original \
+#   --reflection_memory_policy full \
+#   --reflection_memory_size 0
 
 
-echo "Running topk Memory Experiment..."
-CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
-  "${COMMON_ARGS[@]}" \
-  --run_name grounding_rerank_top5 \
-  --reflection_retrieval_mode original \
-  --reflection_memory_policy full \
-  --reflection_memory_size 0 \
-  --rerank_after_grounding \
-  --grounding_topk 5
+# CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
+#   "${COMMON_ARGS[@]}" \
+#   --run_name grounding_rerank_top5 \
+#   --reflection_retrieval_mode original \
+#   --reflection_memory_policy full \
+#   --reflection_memory_size 0 \
+#   --rerank_after_grounding \
+#   --grounding_topk 5
 
 
-echo "Running topk2 Memory Experiment..."
+# echo "Running topk2 Memory Experiment..."
 CUDA_VISIBLE_DEVICES=0 python generation_rec_agents.py \
   "${COMMON_ARGS[@]}" \
   --run_name grounding_rerank_top10 \
